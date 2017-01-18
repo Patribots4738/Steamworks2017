@@ -54,7 +54,7 @@ public class MotorContainer {
 			JoystickWrapper joystick = (JoystickWrapper) input;
 			double forward = Constants.DIR_SPEED_MOD[0] * joystick.getSlider() * joystick.getY() * -1;
 			double strafe = Constants.DIR_SPEED_MOD[1] * joystick.getSlider() * joystick.getX();
-			double rotate = Constants.DIR_SPEED_MOD[2] * joystick.getZ() /2;
+			double rotate = Constants.DIR_SPEED_MOD[2] * joystick.getZ();
 			return getSpeeds(forward, strafe, rotate);
 		} else if (input instanceof Controller) {
 			XboxController xboxController = (XboxController) input;
