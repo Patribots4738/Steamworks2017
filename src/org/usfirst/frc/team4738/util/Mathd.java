@@ -17,12 +17,12 @@ public class Mathd{
 	 * @return The curved normalized value
 	 */
 	
-	public static double curve(double value) {
-		return value * Math.abs(value);
+	public static double curve(double value, double exp) {
+		return Math.pow(Math.abs(value), exp) * Math.signum(value);
 	}
 	
-	public static Axes curveAxes(Axes axes) { 
-		return new Axes(curve(axes.getX()), curve(axes.getY()));
+	public static Axes curveAxes(Axes axes, double exp) { 
+		return new Axes(curve(axes.getX(), exp), curve(axes.getY(), exp));
 	}
 	
 }
