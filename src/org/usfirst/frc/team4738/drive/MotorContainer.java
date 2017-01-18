@@ -32,9 +32,9 @@ public class MotorContainer {
 	
 	private double[] getSpeeds(double forward, double strafe, double rotate) {
 
-		double forwardC = Mathd.curve(forward);
-		double strafeC = Mathd.curve(strafe);
-		double rotateC = Mathd.curve(rotate);
+		double forwardC = Mathd.curve(forward, Constants.DIR_SPEED_EXP[0]);
+		double strafeC = Mathd.curve(strafe, Constants.DIR_SPEED_EXP[0]);
+		double rotateC = Mathd.curve(rotate, Constants.DIR_SPEED_EXP[0]);
 		
 		double r = Math.hypot(forwardC, strafeC);
 		double robotAngle = Math.PI/2 - Math.atan2(forwardC, strafeC);
