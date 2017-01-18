@@ -26,9 +26,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void teleopPeriodic() {
-		if (inputMethod instanceof Input) {
-			motors.updateWheelSpeeds(inputMethod);
-		}
+		motors.updateWheelSpeeds(inputMethod);
 	}
 	
 	public void robotInit() {
@@ -36,6 +34,19 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void teleopInit() {
+		chooseInputMethod();
+	}
+	
+	@Override
+	public void autonomousInit() {
+		
+	}
+	
+	public void autonomousPeriodic() {
+		
+	}
+	
+	private void chooseInputMethod() {
 		inputMethod = null;
 		while (!(inputMethod instanceof Input)) {
 			if (xboxController.getA()) {
@@ -46,15 +57,6 @@ public class Robot extends IterativeRobot {
 				inputMethod = collinsJoystick;
 			}
 		}
-	}
-	
-	@Override
-	public void autonomousInit() {
-		
-	}
-	
-	public void autonomousPeriodic() {
-		
 	}
 	
 }
