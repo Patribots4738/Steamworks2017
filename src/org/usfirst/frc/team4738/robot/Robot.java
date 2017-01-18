@@ -4,8 +4,6 @@ import org.usfirst.frc.team4738.controllers.FancyJoystick;
 import org.usfirst.frc.team4738.controllers.Joystick3D;
 import org.usfirst.frc.team4738.controllers.XboxController;
 import org.usfirst.frc.team4738.controllers.interfaces.Input;
-import org.usfirst.frc.team4738.drive.Constants;
-import org.usfirst.frc.team4738.drive.DriveTypes;
 import org.usfirst.frc.team4738.drive.MotorContainer;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -29,7 +27,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		if (inputMethod instanceof Input) {
-			motors.updateWheelSpeeds(inputMethod, DriveTypes.MECANUM_PARABOLIC);
+			motors.updateWheelSpeeds(inputMethod);
 		}
 	}
 	
