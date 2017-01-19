@@ -14,6 +14,7 @@ public class Mathd{
 	/**
 	 * @author Collin
 	 * @param value The normalized value to curve with exponent of 2
+	 * @param exp 
 	 * @return The curved normalized value
 	 */
 	

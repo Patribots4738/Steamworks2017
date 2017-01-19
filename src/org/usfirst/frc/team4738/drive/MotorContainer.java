@@ -21,27 +21,28 @@ public class MotorContainer {
 		}
 	}
 	
+	public void resetWheelSpeeds() {
+		for (int i=0; i<motors.length; i++) {
+			motors[i].set(0);
+		}
+	}
+	
 	public void updateWheelSpeeds(Input input) {
 		double[] speeds = getSpeeds(input);
 		for (int i=0; i<motors.length;i++) {
 			motors[i].set(speeds[i]);
 		}
 		
-		
 	}
 	
 	private double[] getSpeeds(double forward, double strafe, double rotate) {
-
-		double forwardC = Mathd.curve(forward, Constants.DIR_SPEED_EXP[0]);
-		double strafeC = Mathd.curve(strafe, Constants.DIR_SPEED_EXP[0]);
-		double rotateC = Mathd.curve(rotate, Constants.DIR_SPEED_EXP[0]);
 		
-		double r = Math.hypot(forwardC, strafeC);
-		double robotAngle = Math.PI/2 - Math.atan2(forwardC, strafeC);
-		final double v1 =  (r * Math.sin(robotAngle + Math.PI/4) + rotateC);
-		final double v2 = -(r * Math.cos(robotAngle + Math.PI/4) - rotateC);
-		final double v3 =  (r * Math.cos(robotAngle + Math.PI/4) + rotateC);
-		final double v4 = -(r * Math.sin(robotAngle + Math.PI/4) - rotateC);
+		double r = Math.hypot(forward, strafe);
+		double robotAngle = Math.PI/2 - Math.atan2(forward, strafe);
+		final double v1 =  (r * Math.sin(robotAngle + Math.PI/4) + rotate);
+		final double v2 = -(r * Math.cos(robotAngle + Math.PI/4) - rotate);
+		final double v3 =  (r * Math.cos(robotAngle + Math.PI/4) + rotate);
+		final double v4 = -(r * Math.sin(robotAngle + Math.PI/4) - rotate);
 		
 		double[] speeds = {v1, v2, v3, v4};
 		return speeds;
@@ -52,15 +53,17 @@ public class MotorContainer {
 	public double[] getSpeeds(Input input) {
 		if (input instanceof JoystickWrapper) {
 			JoystickWrapper joystick = (JoystickWrapper) input;
-			double forward = Constants.DIR_SPEED_MOD[0] * joystick.getSlider() * joystick.getY() * -1;
-			double strafe = Constants.DIR_SPEED_MOD[1] * joystick.getSlider() * joystick.getX();
-			double rotate = Constants.DIR_SPEED_MOD[2] * joystick.getZ();
+			double forward = Constants.DIR_SPEED_MOD[0] * joystick.getSlider() * Mathd.curve(joystick.getY(), Constants.DIR_SPEED_EXP[0]) * -1;
+			double strafe = Constants.DIR_SPEED_MOD[1] * joystick.getSlider() * Mathd.curve(joystick.getX(), Constants.DIR_SPEED_EXP[1]);
+			double rotate = Constants.DIR_SPEED_MOD[2] * Mathd.curve(joystick.getZ(), Constants.DIR_SPEED_EXP[2]);
+			
 			return getSpeeds(forward, strafe, rotate);
 		} else if (input instanceof Controller) {
 			XboxController xboxController = (XboxController) input;
-			double forward = xboxController.getLeftStick().getY();
-			double strafe = xboxController.getLeftStick().getX();
-			double rotate = xboxController.getRightStick().getX();
+			double forward = Constants.DIR_SPEED_MOD[0] *  Mathd.curve(xboxController.getLeftStick().getY(), Constants.DIR_SPEED_EXP[0]) * -1;
+			double strafe = Constants.DIR_SPEED_MOD[1] * Mathd.curve(xboxController.getLeftStick().getX(), Constants.DIR_SPEED_EXP[1]);
+			double rotate = Constants.DIR_SPEED_MOD[2] * Mathd.curve(xboxController.getRightStick().getX(), Constants.DIR_SPEED_EXP[2]);
+			
 			return getSpeeds(forward, strafe, rotate);
 		}
 		
