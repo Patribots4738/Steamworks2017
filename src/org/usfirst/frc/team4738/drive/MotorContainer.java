@@ -32,7 +32,13 @@ public class MotorContainer {
 		for (int i=0; i<motors.length;i++) {
 			motors[i].set(speeds[i]);
 		}
-		
+	}
+	
+	public void updateWheelSpeeds(double forward, double strafe, double rotate) {
+		double[] speeds = getSpeeds(forward, strafe, rotate);
+		for (int i=0; i<motors.length;i++) {
+			motors[i].set(speeds[i]);
+		}
 	}
 	
 	private double[] getSpeeds(double forward, double strafe, double rotate) {
