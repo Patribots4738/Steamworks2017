@@ -8,4 +8,6 @@ public class Constants {
 	public static final double[]
 			DIR_SPEED_MOD = {1, 1, .75},
 			DIR_SPEED_EXP = {2, 2, 3.5};
+
+	public static final long TICK_RATE = 10L;
 }

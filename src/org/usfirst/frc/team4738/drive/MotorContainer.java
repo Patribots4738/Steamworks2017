@@ -1,24 +1,30 @@
 package org.usfirst.frc.team4738.drive;
 
-import org.usfirst.frc.team4738.controllers.XboxController;
-import org.usfirst.frc.team4738.controllers.interfaces.Controller;
 import org.usfirst.frc.team4738.controllers.interfaces.Input;
-import org.usfirst.frc.team4738.controllers.interfaces.JoystickWrapper;
-import org.usfirst.frc.team4738.robot.Constants;
-import org.usfirst.frc.team4738.util.Mathd;
+import org.usfirst.frc.team4738.util.PID;
 
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class MotorContainer {
 	
-	private VictorSP[] motors;
+	VictorSP[] motors;
+	PID[] motorControllers;
+	Input input;
 	
-	public MotorContainer(int[] ports) {
+	public MotorContainer(int[] ports, Input input) {
 		motors = new VictorSP[ports.length];
+		this.input = input;
 		
 		for (int i=0; i<ports.length; i++) {
 			motors[i] = new VictorSP(ports[i]);
 		}
+		
+		motorControllers = new PID[] {
+				new PID(1, 1, 1),
+				new PID(1, 1, 1),
+				new PID(1, 1, 1),
+				new PID(1, 1, 1)
+		};
 	}
 	
 	public void resetWheelSpeeds() {
@@ -27,15 +33,15 @@ public class MotorContainer {
 		}
 	}
 	
-	public void updateWheelSpeeds(Input input) {
-		double[] speeds = getSpeeds(input);
+	public void updateWheelSpeeds(double forward, double strafe, double rotate) {
+		double[] speeds = getSpeeds(forward, strafe, rotate);
 		for (int i=0; i<motors.length;i++) {
-			motors[i].set(speeds[i]);
+			double voltage = motorControllers[i].getPID(speeds[i], motors[i].getSpeed());
+			motors[i].set(voltage);
 		}
-		
 	}
 	
-	private double[] getSpeeds(double forward, double strafe, double rotate) {
+	public double[] getSpeeds(double forward, double strafe, double rotate) {
 		
 		double r = Math.hypot(forward, strafe);
 		double robotAngle = Math.PI/2 - Math.atan2(forward, strafe);
@@ -49,25 +55,9 @@ public class MotorContainer {
 		
 		
 	}
-
-	public double[] getSpeeds(Input input) {
-		if (input instanceof JoystickWrapper) {
-			JoystickWrapper joystick = (JoystickWrapper) input;
-			double forward = Constants.DIR_SPEED_MOD[0] * joystick.getSlider() * Mathd.curve(joystick.getY(), Constants.DIR_SPEED_EXP[0]) * -1;
-			double strafe = Constants.DIR_SPEED_MOD[1] * joystick.getSlider() * Mathd.curve(joystick.getX(), Constants.DIR_SPEED_EXP[1]);
-			double rotate = Constants.DIR_SPEED_MOD[2] * Mathd.curve(joystick.getZ(), Constants.DIR_SPEED_EXP[2]);
-			
-			return getSpeeds(forward, strafe, rotate);
-		} else if (input instanceof Controller) {
-			XboxController xboxController = (XboxController) input;
-			double forward = Constants.DIR_SPEED_MOD[0] *  Mathd.curve(xboxController.getLeftStick().getY(), Constants.DIR_SPEED_EXP[0]) * -1;
-			double strafe = Constants.DIR_SPEED_MOD[1] * Mathd.curve(xboxController.getLeftStick().getX(), Constants.DIR_SPEED_EXP[1]);
-			double rotate = Constants.DIR_SPEED_MOD[2] * Mathd.curve(xboxController.getRightStick().getX(), Constants.DIR_SPEED_EXP[2]);
-			
-			return getSpeeds(forward, strafe, rotate);
-		}
-		
-		return null;
+	
+	public void setInput(Input input) {
+		this.input = input;
 	}
 	
 }

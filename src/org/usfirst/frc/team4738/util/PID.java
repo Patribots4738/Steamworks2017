@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4738.util;
 
 public class PID {
-
 	/*
 	 * Create a class the uses calculates and outputs the P and I for the controller
 	 * 
@@ -20,29 +19,44 @@ public class PID {
 	 * That's all for now
 	 */
 	 double Kp, Ki, Kd;
+	 double lastDiff;
+	 double currentSlope;
+	 double totalArea;
+	 
 	 public PID(double Kp, double Ki, double Kd){
 		 this.Kp = Kp;
 		 this.Ki = Ki;
 		 this.Kd = Kd;
+		 this.lastDiff = 0;
+		 this.totalArea = 0;
 	 }
  
 	//This function is DONE!!!!!!!!!!
-	public double CalculateP(double SP, double PV, double p0){
+	public double CalculateP(double SP, double PV){
 		double et = SP - PV;
-		return Kp*et+p0;
+		return Kp*et;
 	}
 	
 	public double CalculateI(){
-		double Iout = 0;
-		return Iout;
+		return Ki * totalArea;
 	}
 	
 	public double CalculateD(){
-		double Dout = 0;
-		return Dout;
+		return currentSlope * Kp;
 	}
 	
-	public double getPID(double SP, double PV, double p0){
-		return CalculateP(SP, PV, p0) + CalculateI() + CalculateD();
+	public double getPID(double SP, double PV){
+
+		return CalculateP(SP, PV) + 
+				CalculateI() + 
+				CalculateD();
 	}
+
+	public void update(long tickRate, double e) {
+		currentSlope = (e - lastDiff) / (tickRate * 1000);
+		totalArea += ((lastDiff+e)/2) * (tickRate / 1000);
+		
+		lastDiff = e;
+	}
+	
 }
