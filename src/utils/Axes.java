@@ -3,6 +3,10 @@ public class Axes {
 
 	double X, Y, Z;
 	
+	public Axes(double X){
+		this.X = X;
+	}
+	
 	/**
 	 * @param X Value of x-axis.
 	 * @param Y Value of y-axis.
