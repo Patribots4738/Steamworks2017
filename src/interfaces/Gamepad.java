@@ -1,7 +1,9 @@
 package interfaces;
+
+import enums.ControllerType;
 import enums.Directions;
 
-public interface Gamepad{
+public interface Gamepad extends Joystick{
 	
 	public int getButtonCount();
 	

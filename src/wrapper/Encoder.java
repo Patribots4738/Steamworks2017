@@ -1,41 +1,62 @@
 package wrapper;
 
 /**
-* @authors Garett and Sami
-*/
-public class Encoder {
+ * @author Owen
+ */
+public class Encoder{
 	
-	private double circumference;
-	public edu.wpi.first.wpilibj.Encoder encoder;
-	private final double clicksPerRotation = 2048;
-	private final double conversionFactor = clicksPerRotation/360;
+	private final double ClicksPerRotation = 2048;
+	public static edu.wpi.first.wpilibj.Encoder encoder;
+	@SuppressWarnings("unused")
+	private double radius, circumference, conversionFactor;
 	
-	// Setting the encoder to its port values
-	// Setting values radius and circumference   
-	 
-	public Encoder(int portA, int portB, double radius){
-		encoder = new edu.wpi.first.wpilibj.Encoder(portA, portB);
+	/**
+	 * @param port1 Channel A
+	 * @param port2 Channel B
+	 */
+	public Encoder(int port1, int port2){
+		encoder = new edu.wpi.first.wpilibj.Encoder(port1, port2);
 		encoder.setDistancePerPulse(0.001);
-		circumference = radius*2*Math.PI;
 	}
 	
-	// This converts click rate to units per second
-	public double getSpeed() {
-		return encoder.getRate() / clicksPerRotation * circumference;
+	/**
+	 * @param port1 Channel A
+	 * @param port2 Channel B
+	 * @param radius Radius of the wheel.
+	 */
+	public Encoder(int port1, int port2, double radius){
+		encoder = new edu.wpi.first.wpilibj.Encoder(port1, port2);
+		this.radius = radius;
+		circumference = radius * 2 * Math.PI;
+		conversionFactor = ClicksPerRotation / 360;
 	}
 	
-	// clicks to units
+	/**
+	 * @return The distance the encoder has spun based on the units of the radius.
+	 */
 	public double getDistance(){
-		return encoder.getDistance() / clicksPerRotation * circumference;
+		 return circumference * (encoder.getDistance() / ClicksPerRotation);
 	}
 	
-	// returns wheel angle between 0 and 359 degrees
+	/**
+	 * @author Ghjf544912
+	 * @return The speed the encoder is at based on the units of the radius per second.
+	 */
+	public double getSpeed(){
+		return circumference * (encoder.getRate() / ClicksPerRotation);
+	}
+	
+	/**
+	 * @return Angle of rotation based on initial angle.
+	 */
 	public double getAngle(){
-		return (encoder.getDistance() / conversionFactor) % 360; 		
+		double clicks = encoder.getDistance();
+		clicks = (Math.abs(clicks / ClicksPerRotation) - (int)(Math.abs(clicks / ClicksPerRotation)));
+		return (clicks * ClicksPerRotation) / conversionFactor;
 	}
 	
-	// resets distance and angle
-	public void reset(){
+	public static void reset(){
 		encoder.reset();
 	}
+	
 }
