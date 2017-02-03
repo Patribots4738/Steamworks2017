@@ -15,10 +15,6 @@ public class Constants {
 	CAN_ID= {0,1,2,3,4,5,6,7,8,9,10},
 	DRIVER_STATION_PORT={0,1,2,3,4,5};
 	
-	public static final double 
-		MAX_RAMP_ANGLE = 10, 
-		MIN_RAMP_ANGLE = 0,
-		MAX_RAMP_SPEED = 2400, //This is in RPM
-		DEGREES_PER_MILLISECONDS = 360 * MAX_RAMP_SPEED / 60 / 1000,
-		MAX_RAMP_SPEED_DEGREES = DEGREES_PER_MILLISECONDS * MAX_RAMP_ANGLE; 
+	public static final double
+	TOP_SPEED = 0;
 }

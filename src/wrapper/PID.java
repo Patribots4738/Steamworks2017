@@ -47,4 +47,10 @@ public class PID {
 		return calcP(SP, PV) + calcI(SP, PV, deltaTime) + calcD(SP, PV, deltaTime);
 	}
 	
+	public void setPIDConstants(double Kp, double Ki, double Kd){
+		this.Kp = Kp;
+		this.Ki = Ki;
+		this.Kd = Kd;
+	}
+	
 }
