@@ -5,6 +5,7 @@ package wrapper;
  * @author Sean, Anthony, Alec
  *
  */
+
 public class PID {
 	
 	double errSum = 0;
@@ -13,6 +14,7 @@ public class PID {
 	
 	Timer timer;
 	
+	//Information regarding variables can be found on the PID controller Wiki
 	public PID(double Kp, double Ki, double Kd){
 		this.Kp = Kp;
 		this.Ki = Ki;
@@ -35,11 +37,11 @@ public class PID {
 	public double calcD(double SP, double PV, double deltaTime){
 		double et = SP-PV;
 		double dErr = (et - lastErr) / deltaTime;
-		//error - last error / time
 		lastErr = et;
 		return Kd * dErr;
 	}
 	
+	//This updates the PID
 	public double calcPID(double SP, double PV){
 		double deltaTime = timer.getDeltaTime();
 		return calcP(SP, PV) + calcI(SP, PV, deltaTime) + calcD(SP, PV, deltaTime);
