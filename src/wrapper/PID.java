@@ -14,7 +14,7 @@ public class PID {
 	
 	Timer timer;
 	
-	//Information regarding variables can be found on the PID controller Wiki
+	//Information about variables & stuff can be found on the PID controller Wiki
 	public PID(double Kp, double Ki, double Kd){
 		this.Kp = Kp;
 		this.Ki = Ki;
