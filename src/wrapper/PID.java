@@ -1,24 +1,48 @@
 package wrapper;
 
+/**
+ * 
+ * @author Sean, Anthony, Alec
+ *
+ */
 public class PID {
 	
-	double error=0;
+	double errSum = 0;
+	double lastErr = 0;
+	double Kp, Ki, Kd;
 	
-	public double CalcP(double SP, double PV){
-		
-		return 0;
+	Timer timer;
+	
+	public PID(double Kp, double Ki, double Kd){
+		this.Kp = Kp;
+		this.Ki = Ki;
+		this.Kd = Kd;
+		timer = new Timer();
+		timer.start();
 	}
 	
-	public double CalcI(double SP, double PV){
-		
-		return 0;
+	public double calcP(double SP, double PV){
+		double et = SP-PV;
+		return Kp*et;
 	}
 	
-	public double CalcD(double SP, double PV){
-		
-		return 0;
+	public double calcI(double SP, double PV, double deltaTime){
+		double et = SP-PV;
+		errSum += (et*deltaTime);
+		return Ki * errSum;
 	}
 	
+	public double calcD(double SP, double PV, double deltaTime){
+		double et = SP-PV;
+		double dErr = (et - lastErr) / deltaTime;
+		//error - last error / time
+		lastErr = et;
+		return Kd * dErr;
+	}
+	
+	public double calcPID(double SP, double PV){
+		double deltaTime = timer.getDeltaTime();
+		return calcP(SP, PV) + calcI(SP, PV, deltaTime) + calcD(SP, PV, deltaTime);
+	}
 	
 }
-
