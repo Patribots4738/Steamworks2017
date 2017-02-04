@@ -6,7 +6,7 @@ package wrapper;
 public class Encoder{
 	
 	private final double ClicksPerRotation = 2048;
-	public static edu.wpi.first.wpilibj.Encoder encoder;
+	public edu.wpi.first.wpilibj.Encoder encoder;
 	@SuppressWarnings("unused")
 	private double radius, circumference, conversionFactor;
 	
@@ -26,6 +26,7 @@ public class Encoder{
 	 */
 	public Encoder(int port1, int port2, double radius){
 		encoder = new edu.wpi.first.wpilibj.Encoder(port1, port2);
+		encoder.setDistancePerPulse(0.001);
 		this.radius = radius;
 		circumference = radius * 2 * Math.PI;
 		conversionFactor = ClicksPerRotation / 360;
@@ -55,7 +56,7 @@ public class Encoder{
 		return (clicks * ClicksPerRotation) / conversionFactor;
 	}
 	
-	public static void reset(){
+	public void reset(){
 		encoder.reset();
 	}
 	

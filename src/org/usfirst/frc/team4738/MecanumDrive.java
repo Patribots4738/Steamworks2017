@@ -14,7 +14,7 @@ public class MecanumDrive {
 	
 	//creating an array for all the motors to be assigned to
 	VictorSP[] motors;
-	
+
 	public MecanumDrive(int... ports){
 		motors = new VictorSP[ports.length];
 		
@@ -33,6 +33,11 @@ public class MecanumDrive {
 		motors[3].set(r * Math.sin(robotAngle + Math.PI/4) - rotation);
 	}
 
+	/**@author Garett
+	 * @param x
+	 * @param y
+	 * @param rotation
+	 */
 	public void parabolicMecanum(double x, double y, double rotation){
 		
 		x *= Math.abs(x);

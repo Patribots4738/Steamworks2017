@@ -1,9 +1,7 @@
 package wrapper;
 
 /**
- * 
  * @author Sean, Anthony, Alec
- *
  */
 
 public class PID {

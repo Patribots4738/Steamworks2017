@@ -14,4 +14,5 @@ public interface Gamepad extends Joystick{
 	public boolean getButtonDown(int button);
 	public boolean getPOV(Directions direction);
 	public String toString();
+	
 }

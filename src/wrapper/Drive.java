@@ -36,6 +36,8 @@ public class Drive {
 		}
 	}
 	
+	
+	//Why is there a linear tank drive?? Unnecessary code. If you find a reason to keep it tell me (Sean)
 	/**
 	 * @param leftStick y-axis for left joystick
 	 * @param rightStick y-axis for left joystick
