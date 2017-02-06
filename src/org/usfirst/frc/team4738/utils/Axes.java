@@ -1,4 +1,4 @@
-package utils;
+package org.usfirst.frc.team4738.utils;
 public class Axes {
 
 	double X, Y, Z;

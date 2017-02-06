@@ -1,11 +1,12 @@
-package wrapper;
+package org.usfirst.frc.team4738.wrapper;
 
-import enums.*;
+import org.usfirst.frc.team4738.enums.Directions;
+import org.usfirst.frc.team4738.enums.XboxButtons;
 
 /**
  * @author Owen
  */
-public class XboxController extends Gamepad implements interfaces.XboxController {
+public class XboxController extends Gamepad implements org.usfirst.frc.team4738.interfaces.XboxController {
 
 	public XboxController(int port) {
 		super(port);

@@ -1,11 +1,11 @@
 package org.usfirst.frc.team4738;
 
+import org.usfirst.frc.team4738.wrapper.Encoder;
+import org.usfirst.frc.team4738.wrapper.Timer;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import wrapper.Encoder;
-import wrapper.Timer;
 
 public class Robot extends IterativeRobot {
 
@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopPeriodic() {
 		
-		if(timer.getTime() < 15000){
+		if (timer.getTime() < 15000) {
 			motor1.setSpeed(1);
 			motor2.setSpeed(1);
 			motor3.setSpeed(1);
@@ -62,22 +62,22 @@ public class Robot extends IterativeRobot {
 		//check encoder value, if || > motorMax, set motorMax = encoder value
 		if (Math.abs(encoder1.getSpeed()) > motor1Max){
 			motor1Max = Math.abs(encoder1.getSpeed());
-			SmartDashboard.putDouble("Motor1", motor1Max);
+			SmartDashboard.putNumber("Motor1", motor1Max);
 		}
 		
 		if (Math.abs(encoder1.getSpeed()) > motor2Max){
 			motor2Max = Math.abs(encoder2.getSpeed());
-			SmartDashboard.putDouble("Motor2", motor2Max);
+			SmartDashboard.putNumber("Motor2", motor2Max);
 		}
 	
 		if (Math.abs(encoder1.getSpeed()) > motor3Max){
 			motor3Max = Math.abs(encoder3.getSpeed());
-			SmartDashboard.putDouble("Motor3", motor3Max);
+			SmartDashboard.putNumber("Motor3", motor3Max);
 		}
 		
 		if (Math.abs(encoder1.getSpeed()) > motor4Max){
 			motor4Max = Math.abs(encoder4.getSpeed());
-			SmartDashboard.putDouble("Motor4", motor4Max);
+			SmartDashboard.putNumber("Motor4", motor4Max);
 		}
 
 		}

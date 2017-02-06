@@ -1,7 +1,8 @@
-package wrapper;
+package org.usfirst.frc.team4738.wrapper;
 
-import java.util.*;
-import edu.wpi.first.wpilibj.*;
+import java.util.ArrayList;
+
+import edu.wpi.first.wpilibj.VictorSP;
 
 /**
  * @author Everyone

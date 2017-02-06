@@ -1,7 +1,6 @@
-package interfaces;
+package org.usfirst.frc.team4738.interfaces;
 
-import enums.ControllerType;
-import enums.Directions;
+import org.usfirst.frc.team4738.enums.Directions;
 
 public interface Gamepad extends Joystick{
 	

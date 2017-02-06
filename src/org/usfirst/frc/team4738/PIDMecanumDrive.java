@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4738;
 
+import org.usfirst.frc.team4738.wrapper.Encoder;
+
 import edu.wpi.first.wpilibj.VictorSP;
-import wrapper.Encoder;
 
 public class PIDMecanumDrive {
 

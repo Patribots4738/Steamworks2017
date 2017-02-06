@@ -1,15 +1,16 @@
-package wrapper;
+package org.usfirst.frc.team4738.wrapper;
+
+import org.usfirst.frc.team4738.enums.ControllerType;
+import org.usfirst.frc.team4738.enums.Directions;
 
 import edu.wpi.first.wpilibj.Joystick;
-import enums.ControllerType;
-import enums.Directions;
 
 /**
  * Sorry Garett, I have a coworker who spells his name with double R single T so my bad. -Stephen
  * @author Sir Garett Davis supreme overlord of the nether realm (^u^)
 
  */
-public class Gamepad implements interfaces.Gamepad{
+public class Gamepad implements org.usfirst.frc.team4738.interfaces.Gamepad{
 	private Timer timer;
 	ToggleButton buttons[];
 	Joystick joystick;

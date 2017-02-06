@@ -1,4 +1,4 @@
-package wrapper;
+package org.usfirst.frc.team4738.wrapper;
 
 import edu.wpi.first.wpilibj.VictorSP;
 

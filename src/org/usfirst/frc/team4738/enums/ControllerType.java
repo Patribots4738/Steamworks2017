@@ -1,4 +1,4 @@
-package enums;
+package org.usfirst.frc.team4738.enums;
 
 /**
  * @author Ghjf544912

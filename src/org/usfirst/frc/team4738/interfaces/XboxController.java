@@ -1,8 +1,8 @@
-package interfaces;
+package org.usfirst.frc.team4738.interfaces;
 
-import enums.Directions;
-import enums.XboxButtons;
-import wrapper.Axes;
+import org.usfirst.frc.team4738.enums.Directions;
+import org.usfirst.frc.team4738.enums.XboxButtons;
+import org.usfirst.frc.team4738.wrapper.Axes;
 
 public interface XboxController extends Joystick{
 
