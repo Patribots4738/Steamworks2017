@@ -1,7 +1,9 @@
 package org.usfirst.frc.team4738.drive;
 
 import org.usfirst.frc.team4738.controllers.interfaces.Input;
-import org.usfirst.frc.team4738.util.PID;
+import org.usfirst.frc.team4738.robot.Robot;
+import org.usfirst.frc.team4738.util.pid_util.ErrorRetriever;
+import org.usfirst.frc.team4738.util.pid_util.PID;
 
 import edu.wpi.first.wpilibj.VictorSP;
 
@@ -20,10 +22,30 @@ public class MotorContainer {
 		}
 		
 		motorControllers = new PID[] {
-				new PID(1, 1, 1),
-				new PID(1, 1, 1),
-				new PID(1, 1, 1),
-				new PID(1, 1, 1)
+				new PID(1, 1, 1, 5, new ErrorRetriever() {
+					@Override
+					public double getError() {
+						return getSpeeds(Robot.forward, Robot.strafe, Robot.rotate)[0] - motors[0].getSpeed();
+					}
+				}),
+				new PID(1, 1, 1, 5, new ErrorRetriever() {
+					@Override
+					public double getError() {
+						return getSpeeds(Robot.forward, Robot.strafe, Robot.rotate)[1] - motors[1].getSpeed();
+					}
+				}),
+				new PID(1, 1, 1, 5, new ErrorRetriever() {
+					@Override
+					public double getError() {
+						return getSpeeds(Robot.forward, Robot.strafe, Robot.rotate)[2] - motors[2].getSpeed();
+					}
+				}),
+				new PID(1, 1, 1, 5, new ErrorRetriever() {
+					@Override
+					public double getError() {
+						return getSpeeds(Robot.forward, Robot.strafe, Robot.rotate)[3] - motors[3].getSpeed();
+					}
+				})
 		};
 	}
 	

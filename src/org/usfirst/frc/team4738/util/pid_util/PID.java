@@ -1,4 +1,6 @@
-package org.usfirst.frc.team4738.util;
+package org.usfirst.frc.team4738.util.pid_util;
+
+import java.util.Timer;
 
 public class PID {
 	/*
@@ -22,13 +24,19 @@ public class PID {
 	 double lastDiff;
 	 double currentSlope;
 	 double totalArea;
+	 long tickrate;
 	 
-	 public PID(double Kp, double Ki, double Kd){
+	 private static final Timer timer = new Timer();
+	 
+	 public PID(double Kp, double Ki, double Kd, long tickrate, ErrorRetriever err){
 		 this.Kp = Kp;
 		 this.Ki = Ki;
 		 this.Kd = Kd;
 		 this.lastDiff = 0;
 		 this.totalArea = 0;
+		 this.tickrate = tickrate;
+		 
+		 timer.schedule(new PIDUpdate(this, err), 0L, tickrate);
 	 }
  
 	//This function is DONE!!!!!!!!!!
@@ -52,9 +60,9 @@ public class PID {
 				CalculateD();
 	}
 
-	public void update(long tickRate, double e) {
-		currentSlope = (e - lastDiff) / (tickRate * 1000);
-		totalArea += ((lastDiff+e)/2) * (tickRate / 1000);
+	public void update(double e) {
+		currentSlope = (e - lastDiff) / (tickrate * 1000);
+		totalArea += ((lastDiff+e)/2) * (tickrate / 1000);
 		
 		lastDiff = e;
 	}

@@ -8,9 +8,8 @@ import org.usfirst.frc.team4738.controllers.interfaces.Controller;
 import org.usfirst.frc.team4738.controllers.interfaces.Input;
 import org.usfirst.frc.team4738.controllers.interfaces.JoystickWrapper;
 import org.usfirst.frc.team4738.drive.MotorContainer;
-import org.usfirst.frc.team4738.drive.PIDUpdate;
 import org.usfirst.frc.team4738.util.Mathd;
-import org.usfirst.frc.team4738.util.PID;
+import org.usfirst.frc.team4738.util.pid_util.PID;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Servo;
@@ -22,9 +21,9 @@ public class Robot extends IterativeRobot {
 	Joystick3D joystick;
 	Servo arm;
 	
-	public double forward = 0D;
-	public double strafe = 0D;
-	public double rotate = 0D;
+	public static double forward = 0D;
+	public static double strafe = 0D;
+	public static double rotate = 0D;
 	
 	Input inputMethod;
 	
@@ -35,8 +34,6 @@ public class Robot extends IterativeRobot {
 		motors = new MotorContainer(new int[] {Constants.PWM_PORT[0], Constants.PWM_PORT[1], Constants.PWM_PORT[2], Constants.PWM_PORT[3]}, inputMethod);
 		xboxController = new XboxController(1);
 		joystick = new Joystick3D(0);
-		
-		timer.schedule(new PIDUpdate(motors, this), Constants.TICK_RATE);
 	}
 
 	public void teleopPeriodic() {
