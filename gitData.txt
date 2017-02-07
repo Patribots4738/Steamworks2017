@@ -1,2 +1,0 @@
-https://github.com/Patribots4738/Steamworks2017.git
-Enter your Git URL on the first line and start the Scripts
