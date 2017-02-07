@@ -40,7 +40,7 @@ public class Camera {
 			@Override
 			public void run() {
 				while(!Thread.interrupted()){
-					pushMat(updateCapture());
+					pushMat(drawCrosshair(updateCapture()));
 				}
 			}
 		}).start();
