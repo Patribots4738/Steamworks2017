@@ -40,7 +40,7 @@ public class Camera {
 			@Override
 			public void run() {
 				while(!Thread.interrupted()){
-					pushMat(drawCrosshair(updateCapture()));
+					pushMat(drawOnImage(updateCapture()));
 				}
 			}
 		}).start();
@@ -64,6 +64,19 @@ public class Camera {
 		}
 		
 		camera = this.camera;
+	}
+	
+	
+	public Mat drawOnImage(Mat frame){
+		Mat dst = frame; //This is your destination mat set it as the input and output of the draw functions
+		
+		//Example on how to use
+		dst = drawCrosshair(dst);
+		
+		//For your own code please create a new function that returns a Mat and gets a Mat input
+		//Then call this function here in order to add it to the camera's feed
+		
+		return dst;
 	}
 	
 	public Mat drawCrosshair(Mat frame){
