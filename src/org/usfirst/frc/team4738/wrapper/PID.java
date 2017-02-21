@@ -12,6 +12,8 @@ public class PID {
 	
 	Timer timer;
 	
+	public double deltaTime;
+	
 	//Information about variables & stuff can be found on the PID controller Wiki
 	public PID(double Kp, double Ki, double Kd){
 		this.Kp = Kp;
@@ -24,6 +26,7 @@ public class PID {
 	public double calcP(double SP, double PV){
 		double et = SP-PV;
 		return Kp*et;
+	
 	}
 	
 	public double calcI(double SP, double PV, double deltaTime){
@@ -41,7 +44,7 @@ public class PID {
 	
 	//This updates the PID
 	public double calcPID(double SP, double PV){
-		double deltaTime = timer.getDeltaTime();
+		deltaTime = timer.getDeltaTime() / 1000;
 		return calcP(SP, PV) + calcI(SP, PV, deltaTime) + calcD(SP, PV, deltaTime);
 	}
 	
