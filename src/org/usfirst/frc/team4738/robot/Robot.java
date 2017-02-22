@@ -16,13 +16,19 @@ public class Robot extends IterativeRobot {
 	VictorSP wench;
 	Gyro gyro;
 	PIDMecanumDrive drive;
+	//Camera cam;
 	
 	XboxController xbox;
 	Gamepad pad;
+	Arms arm;
+	Kicker kicker;
 	
 	
 	//this is what we're using to test the code 
 	public void robotInit() {
+		arm = new Arms(0, 1);
+		kicker = new Kicker(2, 3);
+		
 		
 		gyro = new Gyro(1);
 		
@@ -45,12 +51,16 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousPeriodic() {
+		
 	}
 
 	public void teleopPeriodic() {
-		drive.parabolicMecanum(-(xbox.getAxis(0)), -xbox.getAxis(1), xbox.getAxis(4), 12);
+		drive.parabolicMecanum((xbox.getAxis(0)), -xbox.getAxis(1), -xbox.getAxis(4), 12);
 		
 		wench.set(pad.getAxis(1));
+		
+		arm.openArms(pad.getButton(1));
+		kicker.openKicker(pad.getButton(0));
 		
 		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 	}
