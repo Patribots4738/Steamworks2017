@@ -12,25 +12,25 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Camera {
 	
-	UsbCamera[] cam;
+	UsbCamera cam;
 	int camera = 0;
 	
-	CvSink[] inputs;
+	CvSink inputs;
 	CvSource output;
 	
 	
-	public Camera(int numCamera){
-		cam = new UsbCamera[numCamera];
-		inputs = new CvSink[numCamera];
-		
-		for (int i = 0; i < numCamera; i++) {
-			cam[i] = CameraServer.getInstance().startAutomaticCapture(i);
-			//cam[i].setFPS(30);
-			inputs[i] = CameraServer.getInstance().getVideo(cam[i]);
-		}
-		
-		//320, 240
-		output = CameraServer.getInstance().putVideo("Video", 720, 680);
+	public Camera(){
+		System.out.println("0");
+		cam = CameraServer.getInstance().startAutomaticCapture();
+		cam.setFPS(30);
+		cam.setResolution(640, 480);
+		System.out.println(cam.isConnected());
+		inputs = CameraServer.getInstance().getVideo();
+		System.out.println("2");
+//		output = CameraServer.getInstance().putVideo("TEST", 120, 90);
+		System.out.println("3");
+		System.out.println(cam.isConnected());
+//		startCamera();
 	}
 	
 	
@@ -47,6 +47,10 @@ public class Camera {
 		}).start();
 		
 	}
+	
+	public void camUpdate() {
+		pushMat(drawOnImage(updateCapture()));
+	}
 
 	public void pushMat(Mat frame){
 		output.putFrame(frame);
@@ -54,18 +58,18 @@ public class Camera {
 	
 	public Mat updateCapture(){
 		Mat frame = new Mat();
-		inputs[camera].grabFrame(frame);		
+		inputs.grabFrame(frame);		
 		return frame;
 	}
 	
-	public void changeCamera(int camera){
+	/*public void changeCamera(int camera){
 		if(camera > cam.length - 1){
 			System.err.println("Woah!! THis camera doesn't exist you dimwit!");
 			return;
 		}
 		
 		camera = this.camera;
-	}
+	}*/
 	
 	
 		
@@ -92,10 +96,10 @@ public class Camera {
 		return frame;
 	}
 
-	public void cycleCamera(){
+	/*public void cycleCamera(){
 		if((camera + 1) > cam.length - 1){
 			camera = 0;
 		}
 		changeCamera(camera++);
-	}
+	}*/
 }
