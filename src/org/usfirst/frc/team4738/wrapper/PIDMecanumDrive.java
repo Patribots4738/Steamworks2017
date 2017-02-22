@@ -40,9 +40,9 @@ public class PIDMecanumDrive {
 		double r = Math.hypot(y, x);
 		double robotAngle = Math.PI/2 - Math.atan2(y, x);
 		motors[0].set(Mathd.lerp(motors[0].encoder.getSpeed(), r * Math.sin(robotAngle + Math.PI/4) + rotation, dampening * motors[0].pid.deltaTime));
-		motors[1].set(Mathd.lerp(motors[1].encoder.getSpeed(), r * Math.cos(robotAngle + Math.PI/4) - rotation, dampening * motors[1].pid.deltaTime));
-		motors[2].set(Mathd.lerp(motors[2].encoder.getSpeed(), -r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[2].pid.deltaTime));
-		motors[3].set(Mathd.lerp(motors[3].encoder.getSpeed(), -r * Math.sin(robotAngle + Math.PI/4) - rotation, dampening * motors[3].pid.deltaTime));
+		motors[1].set(Mathd.lerp(motors[1].encoder.getSpeed(), r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[1].pid.deltaTime));
+		motors[2].set(Mathd.lerp(motors[2].encoder.getSpeed(), -(r * Math.cos(robotAngle + Math.PI/4) - rotation), dampening * motors[2].pid.deltaTime));
+		motors[3].set(Mathd.lerp(motors[3].encoder.getSpeed(), -(r * Math.sin(robotAngle + Math.PI/4) - rotation), dampening * motors[3].pid.deltaTime));
 	}
 	
 	public void linearMecanum(double x, double y, double rotation){
@@ -63,9 +63,9 @@ public class PIDMecanumDrive {
 		double r = Math.hypot(y, x);
 		double robotAngle = Math.PI/2 - Math.atan2(y, x);
 		motors[0].set(Mathd.cerp(motors[0].victor.get(), r * Math.sin(robotAngle + Math.PI/4) + rotation, dampening * motors[0].pid.deltaTime));
-		motors[1].set(Mathd.cerp(motors[1].victor.get(), r * Math.cos(robotAngle + Math.PI/4) - rotation, dampening * motors[1].pid.deltaTime));
-		motors[2].set(Mathd.cerp(motors[2].victor.get(), -r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[2].pid.deltaTime));
-		motors[3].set(Mathd.cerp(motors[3].victor.get(), -r * Math.sin(robotAngle + Math.PI/4) - rotation, dampening * motors[3].pid.deltaTime));
+		motors[1].set(Mathd.cerp(motors[1].victor.get(), r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[1].pid.deltaTime));
+		motors[2].set(Mathd.cerp(motors[2].victor.get(), -(r * Math.cos(robotAngle + Math.PI/4) - rotation), dampening * motors[2].pid.deltaTime));
+		motors[3].set(Mathd.cerp(motors[3].victor.get(), -(r * Math.sin(robotAngle + Math.PI/4) - rotation), dampening * motors[3].pid.deltaTime));
 	}
 	
 	public void parabolicMecanum(double x, double y, double rotation){

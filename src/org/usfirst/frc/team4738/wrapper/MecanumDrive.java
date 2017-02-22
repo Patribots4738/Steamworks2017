@@ -38,9 +38,9 @@ public class MecanumDrive {
 		double r = Math.hypot(y, x);
 		double robotAngle = Math.PI/2 - Math.atan2(y, x);
 		motors[0].set(r * Math.sin(robotAngle + Math.PI/4) + rotation);
-		motors[1].set(r * Math.cos(robotAngle + Math.PI/4) - rotation);
-		motors[2].set(r * Math.cos(robotAngle + Math.PI/4) + rotation);
-		motors[3].set(r * Math.sin(robotAngle + Math.PI/4) - rotation);
+		motors[1].set(r * Math.cos(robotAngle + Math.PI/4) + rotation);
+		motors[2].set(-(r * Math.cos(robotAngle + Math.PI/4) - rotation));
+		motors[3].set(-(r * Math.sin(robotAngle + Math.PI/4) - rotation));
 	}
 
 	/**@author Garett
@@ -58,9 +58,9 @@ public class MecanumDrive {
 		double r = Math.hypot(y, x);
 		double robotAngle = Math.PI/2 - Math.atan2(y, x);
 		motors[0].set(r * Math.sin(robotAngle + Math.PI/4) + rotation);
-		motors[1].set(r * Math.cos(robotAngle + Math.PI/4) - rotation);
-		motors[2].set(-r * Math.cos(robotAngle + Math.PI/4) + rotation);
-		motors[3].set(-r * Math.sin(robotAngle + Math.PI/4) - rotation);
+		motors[1].set(r * Math.cos(robotAngle + Math.PI/4) + rotation);
+		motors[2].set(-(r * Math.cos(robotAngle + Math.PI/4) - rotation));
+		motors[3].set(-(r * Math.sin(robotAngle + Math.PI/4) - rotation));
 	}
 	
 	/**
