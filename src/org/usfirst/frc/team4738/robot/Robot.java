@@ -4,24 +4,38 @@ import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
+import org.usfirst.frc.team4738.wrapper.XboxController;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
 	PIDVictorSP[] motors;
+	VictorSP wench;
 	Gyro gyro;
 	PIDMecanumDrive drive;
 	
+	XboxController xbox;
 	Gamepad pad;
+	
 	
 	//this is what we're using to test the code 
 	public void robotInit() {
 		
 		gyro = new Gyro(1);
-		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
-		pad = new Gamepad(0);
+		
+		motors = new PIDVictorSP[4];
+		motors[0] = new PIDVictorSP(7, 2, 3, 3, 0, 0, 0); //front left
+		motors[1] = new PIDVictorSP(8, 6, 7, 3, 0, 0, 0);//back left
+		motors[2] = new PIDVictorSP(6, 0, 1, 3, 0, 0, 0);//front right
+		motors[3] = new PIDVictorSP(9, 4, 5, 3, 0, 0, 0);//back right
+		drive = new PIDMecanumDrive(3, 0, 0, 0, motors);
+		//drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
+		xbox = new XboxController(0);
+		pad = new Gamepad(1);
+		wench = new VictorSP(5);
 		//pad = new XboxController(0);
 		//cam = new Camera(1);
 		//cam.startCamera();
@@ -34,7 +48,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic() {
-		drive.parabolicMecanum(pad.getAxis(0), pad.getAxis(1), 0, 18);
+		drive.parabolicMecanum(-(xbox.getAxis(0)), -xbox.getAxis(1), xbox.getAxis(4), 12);
+		
+		wench.set(pad.getAxis(1));
 		
 		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 	}
