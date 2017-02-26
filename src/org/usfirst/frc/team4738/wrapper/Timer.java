@@ -39,11 +39,11 @@ public class Timer {
 	}
 	
 	/**
-	 * @param time Time to wait.
+	 * @param waitTime Time to wait.
 	 * @return Returns true if it's still waiting, false if the wait period is over.
 	 */
-	public boolean wait(int time){
-		if (time >= getTime())
+	public boolean wait(double waitTime){
+		if (waitTime >= getTime())
 			return true;
 		return false;
 	}

@@ -18,4 +18,8 @@ public class Gyro {
 		angle = (Math.abs(angle / 360) - (int)(Math.abs(angle / 360)));
 		return  average.average(angle * 360);
 	}
+	
+	public void reset(){
+		gyro.reset();
+	}
 }
