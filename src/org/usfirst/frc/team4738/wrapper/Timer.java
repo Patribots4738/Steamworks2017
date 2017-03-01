@@ -7,8 +7,18 @@ public class Timer {
 	
 	double deltaTime = 0, lastTime = 0, startTime;
 	
+	boolean started = false;
+	
 	public void start() {
-		startTime = System.currentTimeMillis();	
+		if(!started){
+			startTime = System.currentTimeMillis();
+			started = true;
+		}
+	}
+	
+	public void stop(){
+		started = false;
+		reset();
 	}
 	
 	/**
