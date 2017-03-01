@@ -14,7 +14,7 @@ public class Autonomous{
 	Arms arms;
 	Kicker kicker;
 	
-	int posInOrder = 0;
+	public int posInOrder = 0;
 	
 	public Autonomous(PIDMecanumDrive drive, Gyro gyro, Arms arms, Kicker kicker) {
 		this.drive = drive;
@@ -36,22 +36,9 @@ public class Autonomous{
 	}
 	
 	public void rotate(double degrees, double speed, int order) {		
-		if(order == posInOrder){
-			
-			if (degrees < 0){ // Are we negative?
-				drive.linearMecanum(0, 0, -speed);
-				degrees += 360;
-				if(gyro.getAngle() < degrees){
-					posInOrder++;
-					drive.linearMecanum(0, 0, 0);
-					gyro.reset();
-				}
-				
-				return;
-			}
-			
+		if(order == posInOrder){			
 			drive.linearMecanum(0, 0, speed);
-			if(gyro.getAngle() > degrees){
+			if(gyro.getAngle() > degrees && gyro.getAngle() < degrees + 5){
 				posInOrder++;
 				drive.linearMecanum(0, 0, 0);
 				gyro.reset();
@@ -61,13 +48,24 @@ public class Autonomous{
 	
 	public void stop(int order){
 		if(order == posInOrder){
-			drive.linearMecanum(0, 0, 0, 16);
-			posInOrder++;
+			boolean isStopped = 
+					drive.motors[0].encoder.getSpeed() == 0 &&
+					drive.motors[1].encoder.getSpeed() == 0 &&
+					drive.motors[2].encoder.getSpeed() == 0 &&
+					drive.motors[3].encoder.getSpeed() == 0;
+			
+			
+			drive.linearMecanum(0, 0, 0);
+			if(isStopped){
+				encoder.reset();
+				posInOrder++;
+			}
 		}
 	}
 	
 	public void reset(){
 		posInOrder = 0;
+		gyro.reset();
 	}
 	
 	public void setArms(boolean state, int order){

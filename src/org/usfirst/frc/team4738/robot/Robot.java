@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
-		wench = new VictorSP(5);
+		//wench = new VictorSP(5);
 		// pad = new XboxController(0);
 		Camera cam = new Camera();
 		//cam.startCamera();
@@ -59,8 +59,20 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		//autoDrive.autonomousChooser(0);
-		//autoDrive.rotate(15, 0.25, 0);
+		//autoDrive.move(93, .35, 0);
+		autoDrive.move(70, .25, 0);
 		autoDrive.stop(1);
+		autoDrive.rotate(170, -.2, 2);
+		autoDrive.stop(3);
+		autoDrive.move(70, .25, 4);
+		autoDrive.stop(5);
+		autoDrive.rotate(170, -.2, 6);
+		autoDrive.stop(7);
+		
+		//autoDrive.rotate(15, 0.25, 0);
+		//autoDrive.rotate(60, -0, 0);
+		
+		SmartDashboard.putNumber("PosInOrder", autoDrive.posInOrder);
 		SmartDashboard.putNumber("Gyro", gyro.getAngle());
 	}
 

@@ -5,7 +5,7 @@ import org.usfirst.frc.team4738.utils.MovingAverage;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
 public class Gyro {	
-	 AnalogGyro gyro;
+	 public AnalogGyro gyro;
 	 MovingAverage average;
 	 
 	public Gyro(int port){
