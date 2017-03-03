@@ -12,27 +12,38 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Camera {
 	
-	UsbCamera cam;
+	UsbCamera[] cam;
 	int camera = 0;
 	
-	CvSink inputs;
+	CvSink[] inputs;
 	CvSource output;
 	
+	ObjectDetector detector;
+	Mat currentFrame;
 	
-	public Camera(){
-		System.out.println("0");
-		cam = CameraServer.getInstance().startAutomaticCapture();
-		cam.setFPS(30);
-		cam.setResolution(640, 480);
-		System.out.println(cam.isConnected());
-		inputs = CameraServer.getInstance().getVideo();
-		System.out.println("2");
-//		output = CameraServer.getInstance().putVideo("TEST", 120, 90);
-		System.out.println("3");
-		System.out.println(cam.isConnected());
-//		startCamera();
+	public Camera(int numCamera){
+		cam = new UsbCamera[numCamera];
+		inputs = new CvSink[numCamera];
+		
+		for(int i = 0; i < numCamera; i++){
+			cam[i] = new UsbCamera(""+i, i);
+			cam[i].setFPS(30);
+			cam[i].setResolution(640, 480);
+			
+			CameraServer.getInstance().addCamera(cam[i]);
+			inputs[i] = CameraServer.getInstance().getVideo("" + i);
+		}
+		
+		output = CameraServer.getInstance().putVideo("Video", 640, 480);
 	}
 	
+	public void enableObjectDetection(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
+		detector = new ObjectDetector(focalLength, actualHeight, FOV, erode_size, dialate_size, upper, lower);
+	}
+	
+	public ObjectDetector getObjectDetector(){
+		return detector;
+	}
 	
 	//FIXME: UNSAFE!!! DO NOT REPLICATE
 	public void startCamera(){
@@ -58,30 +69,40 @@ public class Camera {
 	
 	public Mat updateCapture(){
 		Mat frame = new Mat();
-		inputs.grabFrame(frame);		
+		inputs[camera].grabFrame(frame);
+		currentFrame = frame;
 		return frame;
 	}
 	
-	/*public void changeCamera(int camera){
-		if(camera > cam.length - 1){
-			System.err.println("Woah!! THis camera doesn't exist you dimwit!");
-			return;
+	public int setCamera(int camNum){
+		
+		if(camNum > cam.length - 1 || camNum < 0){
+			return camera;
 		}
 		
-		camera = this.camera;
-	}*/
+		camera = camNum;
+		return camNum;
+	}
 	
+	public void cycleCamera(){
+		if(camera > cam.length - 1){
+			setCamera(0);
+			return;
+		}
+		setCamera(camera++);
+	}
 	
-		
+	public VisionObject[] detectObjects(Mat frame){
+		return detector.findObjects(frame);
+	}
+	
+	public VisionObject[] detectObjects(){
+		return detector.findObjects(currentFrame);
+	}
+	
 	public static Mat drawOnImage(Mat frame){
 		Mat dst = frame; //This is your destination mat set it as the input and output of the draw functions
-		
-		//Example on how to use
 		dst = drawCrosshair(dst);
-		dst = drawDepthLine(dst);
-		//For your own code please create a new function that returns a Mat and gets a Mat input
-		//Then call this function here in order to add it to the camera's feed
-		
 		return dst;
 	}
 	
@@ -95,11 +116,4 @@ public class Camera {
 		Imgproc.circle(frame, new Point(frame.width() / 2, frame.height() / 2), 3, new Scalar(0, 128, 0));
 		return frame;
 	}
-
-	/*public void cycleCamera(){
-		if((camera + 1) > cam.length - 1){
-			camera = 0;
-		}
-		changeCamera(camera++);
-	}*/
 }
