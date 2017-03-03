@@ -2,6 +2,7 @@ package org.usfirst.frc.team4738.robot;
 
 import java.io.File;
 
+import org.usfirst.frc.team4738.wrapper.Encoder;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
@@ -14,13 +15,14 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
-
+	
 	//Cheeki Breeki
 	PIDVictorSP[] motors;
 	VictorSP wench;
 	Gyro gyro;
 	PIDMecanumDrive drive;
 	Autonomous autoDrive;
+	Encoder encoder1, encoder2, encoder3, encoder4;
 	// Camera cam;
 
 	XboxController xbox;
@@ -35,13 +37,20 @@ public class Robot extends IterativeRobot {
 		kicker = new Kicker(5);
 		gyro = new Gyro(0);
 		
+		/*
 		motors = new PIDVictorSP[4];
-		/*motors[0] = new PIDVictorSP(7, 2, 3, 3, 0, 0, 0); // front left
+		motors[0] = new PIDVictorSP(7, 2, 3, 3, 0, 0, 0); // front left
 		motors[1] = new PIDVictorSP(8, 6, 7, 3, 0, 0, 0);// back left
 		motors[2] = new PIDVictorSP(6, 0, 1, 3, 0, 0, 0);// front right
 		motors[3] = new PIDVictorSP(9, 4, 5, 3, 0, 0, 0);// back right
-		drive = new PIDMecanumDrive(3, 0, 0, 0, motors);*/
-		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
+		*/
+		//drive = new PIDMecanumDrive(3, 0, 0, 0, motors);
+		/*encoder1 = new Encoder(0, 1, 4);
+		encoder2 = new Encoder(2, 3, 4);
+		encoder3 = new Encoder(4, 5, 4);
+		encoder4 = new Encoder(6, 7, 4);*/
+
+		drive = new PIDMecanumDrive(4, 1, .04, 0, 0, 1, 2, 3);
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
 		//wench = new VictorSP(5);
@@ -59,7 +68,9 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		//autoDrive.autonomousChooser(0);
-		//autoDrive.move(93, .35, 0);
+		autoDrive.move(93, .35, 0);
+		
+		/*
 		autoDrive.move(70, .25, 0);
 		autoDrive.stop(1);
 		autoDrive.rotate(170, -.2, 2);
@@ -67,7 +78,7 @@ public class Robot extends IterativeRobot {
 		autoDrive.move(70, .25, 4);
 		autoDrive.stop(5);
 		autoDrive.rotate(170, -.2, 6);
-		autoDrive.stop(7);
+		autoDrive.stop(7);*/
 		
 		//autoDrive.rotate(15, 0.25, 0);
 		//autoDrive.rotate(60, -0, 0);
@@ -77,13 +88,19 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic() {
-		drive.parabolicMecanum((xbox.getAxis(0)), -xbox.getAxis(1), -xbox.getAxis(4), 12);
-
-		wench.set(pad.getAxis(1));
-
-		arms.openArms(pad.getButton(1));
-		kicker.openKicker(pad.getButton(0));
-
+		
+		//drive.parabolicMecanum((xbox.getAxis(0)), -xbox.getAxis(1), -xbox.getAxis(4), 5);
+		drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
+		
+		SmartDashboard.putString("Speed 0", "" + drive.motors[0].encoder.getSpeed());
+		SmartDashboard.putString("Speed 1", "" + drive.motors[1].encoder.getSpeed());
+		SmartDashboard.putString("Speed 2", "" + drive.motors[2].encoder.getSpeed());
+		SmartDashboard.putString("Speed 3", "" + drive.motors[3].encoder.getSpeed());
+		//wench.set(pad.getAxis(1));
+		
+		//arms.openArms(pad.getButton(1));
+		//kicker.openKicker(pad.getButton(0));
+		
 		SmartDashboard.putString("Gyro", "" + gyro.getAngle());
 		// cam.camUpdate();
 	}

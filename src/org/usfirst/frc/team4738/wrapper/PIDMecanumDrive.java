@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4738.wrapper;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.VictorSP;
 import org.usfirst.frc.team4738.interfaces.Gamepad;
 import org.usfirst.frc.team4738.utils.Mathd;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDMecanumDrive {
 	public PIDVictorSP[] motors;
@@ -39,10 +39,10 @@ public class PIDMecanumDrive {
 		
 		double r = Math.hypot(y, x);
 		double robotAngle = Math.PI/2 - Math.atan2(y, x);
-		motors[0].set(Mathd.cerp(motors[0].victor.get(), r * Math.sin(robotAngle + Math.PI/4) + rotation, dampening * motors[0].pid.deltaTime));
-		motors[1].set(Mathd.cerp(motors[1].victor.get(), r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[1].pid.deltaTime));
-		motors[2].set(Mathd.cerp(motors[2].victor.get(), -(r * Math.cos(robotAngle + Math.PI/4) - rotation), dampening * motors[2].pid.deltaTime));
-		motors[3].set(Mathd.cerp(motors[3].victor.get(), -(r * Math.sin(robotAngle + Math.PI/4) - rotation), dampening * motors[3].pid.deltaTime));
+		motors[0].cerpSet(r * Math.sin(robotAngle + Math.PI/4) + rotation, dampening);
+		motors[1].cerpSet(r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening);
+		motors[2].cerpSet(-(r * Math.cos(robotAngle + Math.PI/4) - rotation), dampening);
+		motors[3].cerpSet(-(r * Math.sin(robotAngle + Math.PI/4) - rotation), dampening);
 	}
 	
 	public void linearMecanum(double x, double y, double rotation){
@@ -56,20 +56,22 @@ public class PIDMecanumDrive {
 	 */
 	public void parabolicMecanum(double x, double y, double rotation, double dampening){
 		
-		x *= -Math.abs(x);
-		y *= -Math.abs(y);
+		x *= Math.abs(x);
+		y *= Math.abs(y);
 		rotation *= Math.abs(rotation);
 		
-		double r = Math.hypot(y, x);
-		double robotAngle = Math.PI/2 - Math.atan2(y, x);
-		motors[0].set(Mathd.cerp(motors[0].victor.get(), r * Math.sin(robotAngle + Math.PI/4) + rotation, dampening * motors[0].pid.deltaTime));
-		motors[1].set(Mathd.cerp(motors[1].victor.get(), r * Math.cos(robotAngle + Math.PI/4) + rotation, dampening * motors[1].pid.deltaTime));
-		motors[2].set(Mathd.cerp(motors[2].victor.get(), -(r * Math.cos(robotAngle + Math.PI/4) - rotation), dampening * motors[2].pid.deltaTime));
-		motors[3].set(Mathd.cerp(motors[3].victor.get(), -(r * Math.sin(robotAngle + Math.PI/4) - rotation), dampening * motors[3].pid.deltaTime));
+		linearMecanum(x, y, rotation);
+		
+		/*
+		motors[0].set(r * Math.sin(robotAngle + Math.PI/4) + rotation);
+		motors[1].set(r * Math.cos(robotAngle + Math.PI/4) + rotation);
+		motors[2].set(-(r * Math.cos(robotAngle + Math.PI/4) - rotation));
+		motors[3].set(-(r * Math.sin(robotAngle + Math.PI/4) - rotation));
+		*/
 	}
 	
 	public void parabolicMecanum(double x, double y, double rotation){
-		parabolicMecanum(x, y, rotation, 12);
+		parabolicMecanum(x, y, rotation, 8);
 	}
 	
 	/**
@@ -112,11 +114,4 @@ public class PIDMecanumDrive {
 	public void parabolicHeadlessMecanum(double x, double y, double absoluteRotation, double gyro) {
 		parabolicHeadlessMecanum(x, y, absoluteRotation, gyro, 1);
 	}
-	
-	//I think we're supposed to be solving for velocity
-	//velocity, robot angle, and speed are constants we need to import. However, we need to solve for velocity,
-	//so I think our math might be wrong.
-	/*public void wheel1XY(double x, double y, double rotation, double vel, double robotAngle, double speed){
-		double solvedX = Math.sqrt((vel*vel) / Math.pow(((Math.sin(robotAngle)) + (Math.PI/4) + speed), 2));
-		double solvedY = Math.sqrt((vel*vel) / Math.pow(((Math.cos(robotAngle)) + (Math.PI/4) + speed), 2)); */
 }
