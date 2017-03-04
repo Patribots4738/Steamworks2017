@@ -20,7 +20,7 @@ public class Autonomous{
 		this.drive = drive;
 		this.gyro = gyro;
 		encoder = drive.motors[0].encoder;
-		Timer timer = new Timer();
+		timer = new Timer();
 	}
 	
 	public void move(double inches, double speed, int order) {
