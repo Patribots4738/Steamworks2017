@@ -10,7 +10,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 
-public class Camera {
+/*public class Camera {
 	
 	UsbCamera[] cam;
 	int camera = 0;
@@ -116,4 +116,4 @@ public class Camera {
 		Imgproc.circle(frame, new Point(frame.width() / 2, frame.height() / 2), 3, new Scalar(0, 128, 0));
 		return frame;
 	}
-}
+} */

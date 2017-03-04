@@ -8,7 +8,7 @@ import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.XboxController;
-import org.usfirst.frc.team4738.wrapper.vision.Camera;
+//import org.usfirst.frc.team4738.wrapper.vision.Camera;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
 		pad = new Gamepad(1);
 		//wench = new VictorSP(5);
 		// pad = new XboxController(0);
-		Camera cam = new Camera();
+		//Camera cam = new Camera();      <------- All camera code was commented out. Giving error for visionObject
 		//cam.startCamera();
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 		

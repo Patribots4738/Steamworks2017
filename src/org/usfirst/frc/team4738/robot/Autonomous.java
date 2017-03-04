@@ -20,7 +20,7 @@ public class Autonomous{
 		this.drive = drive;
 		this.gyro = gyro;
 		encoder = drive.motors[0].encoder;
-		Timer timer = new Timer();
+		timer = new Timer();
 	}
 	
 	public void move(double inches, double speed, int order) {
@@ -94,6 +94,7 @@ public class Autonomous{
 	
 	public void autonomousChooser(int autoNum){
 		switch (autoNum) {
+		//When robot is in middle of field
 		case 0:
 			move(93, .75, 0);
 			stop(1);
@@ -106,8 +107,9 @@ public class Autonomous{
 			stop(8);
 		break;
 		
+		//When the robot is on the right side of the field
 		case 1:
-			move(140, .75, 0);
+			move(105, .75, 0);
 			stop(1);
 			rotate(60, .5, 2);
 			stop(3);
@@ -120,9 +122,10 @@ public class Autonomous{
 			rotate(-60, .5, 10);
 			move(86, .75, 11);
 		break;
-			
+		
+		//When the robot is on the left side of the field
 		case 2:
-			move(140, .75, 0);
+			move(105, .75, 0);
 			stop(1);
 			rotate(-60, .5, 2);
 			stop(3);
