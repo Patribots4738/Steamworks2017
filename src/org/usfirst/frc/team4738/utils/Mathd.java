@@ -12,6 +12,12 @@ public class Mathd{
 		return 0;
 	}
 	
+	//variables a, b, and f are to be replaced with value, destination, and dampening
+	float lerp(float a, float b, float f)
+	{
+	    return a + f * (b - a);
+	}
+	
 	public static double lerp(double value, double destination, double dampening){
 		//return value + (destination - value) * dampening;
 		return value * (1-dampening) + (destination*dampening);
