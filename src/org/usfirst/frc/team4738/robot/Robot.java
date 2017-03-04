@@ -1,12 +1,11 @@
 package org.usfirst.frc.team4738.robot;
 
-import java.io.File;
-
 import org.usfirst.frc.team4738.wrapper.Encoder;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
+import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
 //import org.usfirst.frc.team4738.wrapper.vision.Camera;
 
@@ -23,6 +22,7 @@ public class Robot extends IterativeRobot {
 	PIDMecanumDrive drive;
 	Autonomous autoDrive;
 	Encoder encoder1, encoder2, encoder3, encoder4;
+	Timer timer;
 	// Camera cam;
 
 	XboxController xbox;
@@ -67,9 +67,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousPeriodic() {
+		timer.start();
 		//autoDrive.autonomousChooser(0);
-		autoDrive.move(93, .35, 0);
-		
+		autoDrive.autonomousChooser(0);
+		while (this.isAutonomous()){
+		if (timer.getDeltaTime() > 15000){
+			break;
+			}
+		}
 		/*
 		autoDrive.move(70, .25, 0);
 		autoDrive.stop(1);
