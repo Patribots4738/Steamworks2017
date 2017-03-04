@@ -68,7 +68,8 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		timer.start();
-		//autoDrive.autonomousChooser(0);
+
+		
 		autoDrive.autonomousChooser(0);
 		while (this.isAutonomous()){
 		if (timer.getDeltaTime() > 15000){
@@ -95,7 +96,8 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		
 		//drive.parabolicMecanum((xbox.getAxis(0)), -xbox.getAxis(1), -xbox.getAxis(4), 5);
-		drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
+		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
+		drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4), 8);
 		
 		SmartDashboard.putString("Speed 0", "" + drive.motors[0].encoder.getSpeed());
 		SmartDashboard.putString("Speed 1", "" + drive.motors[1].encoder.getSpeed());
