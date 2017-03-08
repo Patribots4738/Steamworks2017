@@ -8,18 +8,20 @@ public class Mathd{
 	}
 	
 	
-	public static double normalize(double value, double max, double min){
-		return 0;
+	public static double normalize(double value, double max){
+		return value / max;
 	}
 	
-	//variables a, b, and f are to be replaced with value, destination, and dampening
+	//variables a, b, and f are to be replaced with current position, destination, and dampening
 	float lerp(float a, float b, float f)
 	{
 	    return a + f * (b - a);
 	}
 	
+	//This was basically cerp and then changed with a "c"
 	public static double lerp(double value, double destination, double dampening){
 		//return value + (destination - value) * dampening;
+		//THIS ONE HAS PARANTHESIS AND THE OTHER CERP DOESNT
 		return value * (1-dampening) + (destination*dampening);
 	}
 	

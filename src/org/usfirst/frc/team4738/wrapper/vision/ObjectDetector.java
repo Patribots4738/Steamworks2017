@@ -12,7 +12,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-/*public class ObjectDetector {
+public class ObjectDetector {
 	
 	double actualHeight = 3, focalLength = 458, FOV = 80;
 	
@@ -62,4 +62,4 @@ import org.opencv.imgproc.Imgproc;
 		
 		return objects.toArray(new VisionObject[objects.size()]);
 	}
-} */
+}

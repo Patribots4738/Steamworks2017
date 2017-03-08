@@ -10,7 +10,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 
-/*public class Camera {
+public class Camera {
 	
 	UsbCamera[] cam;
 	int camera = 0;
@@ -26,15 +26,16 @@ import edu.wpi.first.wpilibj.CameraServer;
 		inputs = new CvSink[numCamera];
 		
 		for(int i = 0; i < numCamera; i++){
-			cam[i] = new UsbCamera(""+i, i);
+			cam[i] = new UsbCamera("USB Camera " + i, i);
 			cam[i].setFPS(30);
-			cam[i].setResolution(640, 480);
-			
-			CameraServer.getInstance().addCamera(cam[i]);
-			inputs[i] = CameraServer.getInstance().getVideo("" + i);
+			cam[i].setResolution(320, 240);
+			//CameraServer.getInstance().addCamera(cam[i]);
+			inputs[i] = CameraServer.getInstance().getVideo(cam[i]);
+			inputs[i].setSource(cam[i]);
+			//CameraServer.getInstance().addServer(inputs[i]);
 		}
 		
-		output = CameraServer.getInstance().putVideo("Video", 640, 480);
+		output = CameraServer.getInstance().putVideo("Video", 320, 240);
 	}
 	
 	public void enableObjectDetection(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
@@ -52,7 +53,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 			@Override
 			public void run() {
 				while(!Thread.interrupted()){
-					pushMat(drawOnImage(updateCapture()));
+					camUpdate();
 				}
 			}
 		}).start();
@@ -65,6 +66,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 	public void pushMat(Mat frame){
 		output.putFrame(frame);
+		frame.release();
 	}
 	
 	public Mat updateCapture(){
@@ -116,4 +118,4 @@ import edu.wpi.first.wpilibj.CameraServer;
 		Imgproc.circle(frame, new Point(frame.width() / 2, frame.height() / 2), 3, new Scalar(0, 128, 0));
 		return frame;
 	}
-} */
+}
