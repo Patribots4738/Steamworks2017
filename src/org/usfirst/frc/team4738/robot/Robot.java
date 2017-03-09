@@ -69,7 +69,6 @@ public class Robot extends IterativeRobot {
 		drive.setPID(1, 0, 0);
 		drive.motors[0].victor.stopMotor();
 		autoDrive.reset(); 
-		drive.linearMecanum(0, 0, 0);
 	}
 
 	public void autonomousPeriodic() {
