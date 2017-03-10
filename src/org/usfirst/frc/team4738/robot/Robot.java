@@ -24,7 +24,6 @@ public class Robot extends IterativeRobot {
 	PIDMecanumDrive drive;
 	Autonomous autoDrive;
 	Timer timer;
-	// Camera cam;
 
 	XboxController xbox;
 	Gamepad pad;
@@ -72,10 +71,9 @@ public class Robot extends IterativeRobot {
 		pad = new Gamepad(1);
 		wench = new VictorSP(5);
 		// pad = new XboxController(0);
-		//cam = new Camera(1);
-		//cam.startCamera();
+		cam = new Camera(1);
+		cam.startCamera();
 		//______autoDrive = new Autonomous(drive, gyro, arms, kicker);
-		CameraServer.getInstance().startAutomaticCapture(0);
 	}
 	
 	int autoMode = 0;
@@ -126,14 +124,10 @@ public class Robot extends IterativeRobot {
 		kicker.servoState(pad.getButton(0));
 				
 		SmartDashboard.putString("Gyro", "" + gyro.getAngle());
-		// cam.camUpdate();
+		cam.camUpdate();
 		
 //		System.out.println(cam.inputs);
 //		System.out.println(cam.inputs.toString());
-		
-		if(timer.getTime() > 120 * 1000){
-			
-		}
 	}
 		
 	public void testPeriodic() {

@@ -20,7 +20,7 @@ public class MultiServo {
 			servos[i].setAngle(angle[i]);
 		}
 	}
-	//chagned ... to []
+	//changed ... to []
 	public void setBounds(double[][]  bounds){
 		this.bounds = bounds;
 	}

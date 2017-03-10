@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4738.wrapper.vision;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -102,6 +103,7 @@ public class Camera {
 	
 	public static Mat drawOnImage(Mat frame){
 		Mat dst = frame; //This is your destination mat set it as the input and output of the draw functions
+		Core.flip(frame, dst, -1);
 		dst = drawCrosshair(dst);
 		//dst = drawDepthLine(dst);
 		return dst;
