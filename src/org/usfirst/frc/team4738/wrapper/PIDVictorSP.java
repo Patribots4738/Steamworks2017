@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDVictorSP {
 	
-	VictorSP victor;
+	public VictorSP victor;
 	PID pid;
 	public Encoder encoder;
 	int port;
@@ -31,6 +31,10 @@ public class PIDVictorSP {
 	
 	public void cerpSet(double speed, double dampening){
 		set(Mathd.cerp(encoder.getSpeed() / Constants.TOP_SPEED, speed, dampening * pid.deltaTime));
+	}
+	
+	public void lerpSet(double speed, double dampening){
+		set(Mathd.lerp(victor.get(), speed, dampening * pid.deltaTime));
 	}
 	
 	public void setPID(double Kp, double Ki, double Kd){

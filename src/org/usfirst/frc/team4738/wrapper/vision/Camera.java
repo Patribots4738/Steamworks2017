@@ -26,15 +26,14 @@ public class Camera {
 		inputs = new CvSink[numCamera];
 		
 		for(int i = 0; i < numCamera; i++){
-			cam[i] = new UsbCamera(""+i, i);
+			cam[i] = new UsbCamera("USB Camera " + i, i);
 			cam[i].setFPS(30);
-			cam[i].setResolution(640, 480);
-			
-			CameraServer.getInstance().addCamera(cam[i]);
-			inputs[i] = CameraServer.getInstance().getVideo("" + i);
+			cam[i].setResolution(320, 240);
+			inputs[i] = CameraServer.getInstance().getVideo(cam[i]);
+			inputs[i].setSource(cam[i]);
 		}
 		
-		output = CameraServer.getInstance().putVideo("Video", 640, 480);
+		output = CameraServer.getInstance().putVideo("Video", 320, 240);
 	}
 	
 	public void enableObjectDetection(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
@@ -52,7 +51,7 @@ public class Camera {
 			@Override
 			public void run() {
 				while(!Thread.interrupted()){
-					pushMat(drawOnImage(updateCapture()));
+					camUpdate();
 				}
 			}
 		}).start();
@@ -65,6 +64,7 @@ public class Camera {
 
 	public void pushMat(Mat frame){
 		output.putFrame(frame);
+		frame.release();
 	}
 	
 	public Mat updateCapture(){
@@ -89,7 +89,7 @@ public class Camera {
 			setCamera(0);
 			return;
 		}
-		setCamera(camera++);
+		setCamera(++camera);
 	}
 	
 	public VisionObject[] detectObjects(Mat frame){
@@ -103,6 +103,7 @@ public class Camera {
 	public static Mat drawOnImage(Mat frame){
 		Mat dst = frame; //This is your destination mat set it as the input and output of the draw functions
 		dst = drawCrosshair(dst);
+		//dst = drawDepthLine(dst);
 		return dst;
 	}
 	
