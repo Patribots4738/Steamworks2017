@@ -23,11 +23,11 @@ public class Autonomous{
 		this.gyro = gyro;
 		this.arms = arms;
 		this.kicker = kicker;
-		encoder = drive.motors[0].encoder;
+		encoder = drive.motors[1].encoder;
 		timer = new Timer();
 	}
 	
-	public void stupidMove(double inches, double speed, int order) {
+	public void move(double inches, double speed, int order) {
 		if(order == posInOrder){
 			//There must be an error here as the robot goes at full speed regardless
 			drive.linearMecanum(0, speed, 0);
@@ -35,24 +35,6 @@ public class Autonomous{
 			if(Math.abs(encoder.getDistance()) > inches){
 				posInOrder++;
 				drive.linearMecanum(0, 0, 0);
-				encoder.reset();
-			}
-		}
-	}
-	
-	public void move(double inches, double speed, int order) {
-		if(order == posInOrder){
-			//There must be an error here as the robot goes at full speed regardless
-			//We have to normalize the inches - encoder.getDistance so that the robot's speed doesnt end up being multiplied
-			//by some crazy value like 4
-			//drive.linearMecanum(0, (speed * (inches - encoder.getDistance())), 0);
-			drive.linearMecanum(0, speed, 0);
-			
-			SmartDashboard.putString("move Speed", "" + speed * (inches - encoder.getDistance()));
-			System.out.println(Math.abs(encoder.getDistance()));
-			if(Math.abs(encoder.getDistance()) > inches){
-				posInOrder++;
-				//drive.linearMecanum(1, 0, 0);
 				encoder.reset();
 			}
 		}
@@ -121,7 +103,6 @@ public class Autonomous{
 	
 	public void autonomousChooser(int autoNum){
 		switch (autoNum) {
-		
 		//SET SPEED VALUES: movement: .75, rotation: .5
 		//When robot is in middle of field
 		case 0:
@@ -190,6 +171,25 @@ public class Autonomous{
 			stop(15);
 			
 		break;
+		
+		case 3:
+			move(27, -0.25, 0);
+			stop(1);
+			setArms(true, 2);
+			timedWait(800, 3);
+			setKicker(true, 4);
+			timedWait(1000, 5);
+			move(13, 0.25, 6);
+			stop(7);
+			setKicker(false, 8);
+			setArms(false, 9);
+			
+		case 4:
+			//29.5 - 103in
+			move(38, -.25, 0);
+			stop(1);
+			
+			
 		}
 	}
 }

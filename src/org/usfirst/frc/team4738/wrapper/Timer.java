@@ -53,7 +53,7 @@ public class Timer {
 	 * @return Returns true if it's still waiting, false if the wait period is over.
 	 */
 	public boolean wait(double waitTime){
-		if (waitTime >= getTime())
+		if (waitTime <= getTime())
 			return true;
 		return false;
 	}

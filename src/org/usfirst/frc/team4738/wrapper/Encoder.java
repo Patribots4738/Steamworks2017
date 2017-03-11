@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
  */
 public class Encoder{
 	
-	private final double ClicksPerRotation = 2;
+	private final double ClicksPerRotation = 250;
 	public edu.wpi.first.wpilibj.Encoder encoder;
-	private double radius, circumference, conversionFactor;
+	private double circumference, conversionFactor;
 
 	/**
 	 * @param port1 Channel A
