@@ -172,8 +172,10 @@ public class Autonomous{
 			
 		break;
 		
+		//middle gear autonomous
+		//27 wasn't long enough, 29.5 may be right
 		case 3:
-			move(27, -0.25, 0);
+			move(29.5, -0.25, 0);
 			stop(1);
 			setArms(true, 2);
 			timedWait(800, 3);
@@ -186,10 +188,10 @@ public class Autonomous{
 			
 		case 4:
 			//29.5 - 103in
-			move(38, -.25, 0);
+			//38 crosses base line, 76 for halfway across the field
+			move(65, -.25, 0);
 			stop(1);
-			
-			
+
 		}
 	}
 }

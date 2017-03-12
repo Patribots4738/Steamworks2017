@@ -30,8 +30,11 @@ public class Camera {
 			cam[i] = new UsbCamera("USB Camera " + i, i);
 			cam[i].setFPS(30);
 			cam[i].setResolution(320, 240);
-			inputs[i] = CameraServer.getInstance().getVideo(cam[i]);
+			inputs[i] = new CvSink(i + "");
 			inputs[i].setSource(cam[i]);
+			
+			System.out.println(inputs[i]);
+			System.out.println(cam[i]);
 		}
 		
 		output = CameraServer.getInstance().putVideo("Video", 320, 240);
@@ -48,7 +51,6 @@ public class Camera {
 	//FIXME: UNSAFE!!! DO NOT REPLICATE
 	public void startCamera(){
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				while(!Thread.interrupted()){
@@ -80,6 +82,12 @@ public class Camera {
 		if(camNum > cam.length - 1 || camNum < 0){
 			return camera;
 		}
+		
+		for(int i = 0; i < cam.length; i++){
+			inputs[i].setEnabled(false);
+		}
+		
+		inputs[camera].setEnabled(true);
 		
 		camera = camNum;
 		return camNum;

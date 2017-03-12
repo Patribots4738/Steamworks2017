@@ -73,8 +73,8 @@ public class Robot extends IterativeRobot {
 		/*try{
 			cam = new Camera(1);
 			cam.startCamera();
-		} catch(Exception e){}
-		*/
+		} catch(Exception e){}*/
+		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 		System.out.println(autoDrive.posInOrder);
 	}
@@ -93,9 +93,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousPeriodic() {
+		//autonomous 3 is the middle gear, autonomous 4 is the baseline that goes halfway
+		//across the field
 		autoDrive.autonomousChooser(4);
-		
-		//autoDrive.autonomousChooser(autoMode); // Changed from static value of 0 to the fist string in the DB/String
 		
 		//drive.linearMecanum(0, .25, 0);
 		
