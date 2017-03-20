@@ -15,23 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
-	//Cheeki Breeki
+	//Cheeki Breeki check
 	PIDVictorSP[] motors;
 	VictorSP wench;
 	Gyro gyro;
 	PIDMecanumDrive drive;
 	Autonomous autoDrive;
 	Timer timer;
-
 	XboxController xbox;
 	Gamepad pad;
 	MultiServo arms, kicker;
-	//Kicker kicker;
-
 	Camera cam;
 	
-	//pwm 5, mcm - winch
-	//
 	public void robotInit() {
 		//arms = new Arms(0, 1);
 		//kicker = new Kicker(2, 3);
@@ -41,7 +36,6 @@ public class Robot extends IterativeRobot {
 		double[][] bounds = {{0, 90}, {90, 0}};
 		arms.setBounds(bounds);
 		double[][] kickBounds = {{105, 60}, {60, 105}};
-		//double[][] kickBounds = {{90, 90}, {90, 90}};
 		kicker = new MultiServo(2, 3);
 		kicker.setBounds(kickBounds);
 		gyro = new Gyro(0);
@@ -62,14 +56,11 @@ public class Robot extends IterativeRobot {
 		encoder3 = new Encoder(4, 5, 4);
 		encoder4 = new Encoder(6, 7, 4);*/
 		
-		//9 , 8 , 7, 6
-		//last 4 - 0, 1, 2, 3
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, new int[] {6, 7, 8, 9});
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 7, 6, 8, 9);
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
 		wench = new VictorSP(5);
-		// pad = new XboxController(0);
 		/*try{
 			cam = new Camera(1);
 			cam.startCamera();
@@ -82,7 +73,6 @@ public class Robot extends IterativeRobot {
 	int autoMode = 3;
 	
 	public void autonomousInit() {
-		//drive.setPID(0, 0, 0);
 		autoDrive.reset();
 		
 //		try {
@@ -93,11 +83,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousPeriodic() {
-		//autonomous 3 is the middle gear, autonomous 4 is the baseline that goes halfway
-		//across the field
-		autoDrive.autonomousChooser(4);
 		
-		//drive.linearMecanum(0, .25, 0);
+		autoDrive.autonomousChooser(4);
 		
 		for(int i = 0; i < 4; i++){
 			SmartDashboard.putNumber("Encoder " + i, drive.motors[i].encoder.getDistance());
@@ -115,13 +102,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		timer.start();
 		 
-		//Dampening was formerly at 8, changes to lerp may require re=adjusting it
-		// ______drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4), 3);
 		drive.parabolicMecanum(-xbox.getLeftStick().getX(), xbox.getLeftStick().getY(), -xbox.getRightStick().getX());
-		
-		//if(xbox.getButtonDown(XboxButtons.A)){
-//			cam.cycleCamera();
-		//}
 		
 		wench.set(pad.getAxis(1));
 //		arms.servos[0].set(0);
@@ -129,12 +110,8 @@ public class Robot extends IterativeRobot {
 		arms.servoState(pad.getButton(1));
 		kicker.servoState(pad.getButton(0));
 		
-		//SmartDashboard.putString("Gyro", "" + gyro.getAngle());
 		//cam.camUpdate();
-		
-//		System.out.println(cam.inputs);
-//		System.out.println(cam.inputs.toString());
-	}
+		}
 		
 	public void testPeriodic() {
 	}
