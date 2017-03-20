@@ -27,7 +27,7 @@ public class Autonomous{
 		timer = new Timer();
 	}
 	
-	public void move(double inches, double speed, int order) {
+	public void stupidMove(double inches, double speed, int order) {
 		if(order == posInOrder){
 			//There must be an error here as the robot goes at full speed regardless
 			drive.linearMecanum(0, speed, 0);
@@ -35,6 +35,24 @@ public class Autonomous{
 			if(Math.abs(encoder.getDistance()) > inches){
 				posInOrder++;
 				drive.linearMecanum(0, 0, 0);
+				encoder.reset();
+			}
+		}
+	}
+	
+	public void move(double inches, double speed, int order) {
+		if(order == posInOrder){
+			//There must be an error here as the robot goes at full speed regardless
+			//We have to normalize the inches - encoder.getDistance so that the robot's speed doesnt end up being multiplied
+			//by some crazy value like 4
+			//drive.linearMecanum(0, (speed * (inches - encoder.getDistance())), 0);
+			drive.linearMecanum(0, speed, 0);
+			
+			SmartDashboard.putString("move Speed", "" + speed * (inches - encoder.getDistance()));
+			System.out.println(Math.abs(encoder.getDistance()));
+			if(Math.abs(encoder.getDistance()) > inches){
+				posInOrder++;
+				//drive.linearMecanum(1, 0, 0);
 				encoder.reset();
 			}
 		}
@@ -103,6 +121,7 @@ public class Autonomous{
 	
 	public void autonomousChooser(int autoNum){
 		switch (autoNum) {
+<<<<<<< HEAD
 		//SET SPEED VALUES: movement: .75, rotation: .5
 		//When robot is in middle of field
 		case 0:
@@ -127,6 +146,23 @@ public class Autonomous{
 			move(45, .5, 8);
 			stop(9);
 			*/
+=======
+		
+		//SET SPEED VALUES: movement: .75, rotation: .5
+		//When robot is in middle of field
+		case 0:
+			move(93, .5, 0);
+			move( 1, .2, 1); //This is manual softening code
+			stop(2);
+			timedWait(3000, 3);
+			// setArms(true, 3);
+			move(93, -.5, 4);
+			stop(5);
+			//degrees may need to be 10 less than the actual value due to drift
+			rotate(60, .5, 6);
+			move(45, .5, 7);
+			stop(8);
+>>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 		break;
 		
 		//When the robot is on the right side of the field
@@ -138,6 +174,7 @@ public class Autonomous{
 			move(54, .5, 4);
 			stop(5);
 			timedWait(1.5, 6);
+<<<<<<< HEAD
 			setArms(true, 7);
 			timedWait(.5, 8);
 			setKicker(true, 9);
@@ -147,6 +184,17 @@ public class Autonomous{
 			rotate(-60, .5, 12);
 			move(86, .5, 13);
 			stop(14);
+=======
+			//setArms(true, 7);
+			timedWait(.5, 8);
+			//setKicker(true, 9);
+			move(-54, .5, 10);
+			stop(9);
+			//degrees may need to be 10 less than the actual value due to drift
+			rotate(-60, .5, 11);
+			move(86, .5, 12);
+			stop(13);
+>>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 			
 		break;
 		
@@ -159,16 +207,26 @@ public class Autonomous{
 			move(54, .75, 4);
 			stop(5);
 			timedWait(1.5, 6);
+<<<<<<< HEAD
 			setArms(true, 7);
 			timedWait(.5, 8);
 			setKicker(true, 9);
+=======
+			//setArms(true, 7);
+			timedWait(.5, 8);
+			//setKicker(true, 9);
+>>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 			timedWait(1, 10);
 			move(-54, .75, 11);
 			stop(12);
 			//degrees may need to be 10 less than the actual value due to drift
 			rotate(60, .5, 13);
 			move(86, .75, 14);
+<<<<<<< HEAD
 			stop(15);
+=======
+			stop(14);
+>>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 			
 		break;
 		
