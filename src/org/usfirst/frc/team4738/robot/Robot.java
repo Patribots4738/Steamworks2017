@@ -1,26 +1,23 @@
 package org.usfirst.frc.team4738.robot;
 
-import org.usfirst.frc.team4738.enums.XboxButtons;
-
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
-import org.usfirst.frc.team4738.wrapper.vision.Camera;
 
-import edu.wpi.cscore.CameraServerJNI;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
+	public static double GEAR_RATIO = 1;
+	
 	//Cheeki Breeki
 	PIDVictorSP[] motors;
-	VictorSP wench;
+	VictorSP winch;
 	Gyro gyro;
 	PIDMecanumDrive drive;
 	Autonomous autoDrive;
@@ -28,8 +25,7 @@ public class Robot extends IterativeRobot {
 	XboxController xbox;
 	Gamepad pad;
 	MultiServo arms, kicker;
-	//Camera cam;
-	Camera cam;
+//	Camera cam;
 	
 	public void robotInit() {
 		//arms = new Arms(0, 1);
@@ -50,13 +46,13 @@ public class Robot extends IterativeRobot {
 		
 		motors = new PIDVictorSP[4];
 		
-		motors[0] = new PIDVictorSP(7, 2, 3, 3 * 6.66, 0, 0, 0); // front left
-		motors[1] = new PIDVictorSP(8, 6, 7, 3 * 6.66, 0, 0, 0);// back left
-		motors[2] = new PIDVictorSP(6, 0, 1, 3 * 6.66, 0, 0, 0);// front right
-		motors[3] = new PIDVictorSP(9, 4, 5, 3 * 6.66, 0, 0, 0);// back right
+		motors[0] = new PIDVictorSP(7, 2, 3, 3 * GEAR_RATIO, 0, 0, 0); // front left
+		motors[1] = new PIDVictorSP(8, 6, 7, 3 * GEAR_RATIO, 0, 0, 0);// back left
+		motors[2] = new PIDVictorSP(6, 0, 1, 3 * GEAR_RATIO, 0, 0, 0);// front right
+		motors[3] = new PIDVictorSP(9, 4, 5, 3 * GEAR_RATIO, 0, 0, 0);// back right
 		
-		// !!!!!1 to 6.6!!!, or 6.6 to 1 either way 
-		drive = new PIDMecanumDrive(3 * 6.6, 0, 0, 0, motors);
+		// !!!!!1 to GEAR_RATIO!!!, or GEAR_RATIO to 1 either way 
+		drive = new PIDMecanumDrive(3 * GEAR_RATIO, 0, 0, 0, motors);
 		/*encoder1 = new Encoder(0, 1, 4);
 		encoder2 = new Encoder(2, 3, 4);
 		encoder3 = new Encoder(4, 5, 4);
@@ -66,20 +62,20 @@ public class Robot extends IterativeRobot {
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 7, 6, 8, 9);
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
-		wench = new VictorSP(5);
+		winch = new VictorSP(5);
 		/*try{
 			cam = new Camera(1);
 			cam.startCamera();
 		} catch(Exception e){}*/
 		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
-		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
+//		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
 		//wench = new VictorSP(5);
 		// pad = new XboxController(0);
-		cam = new Camera(1);
-		cam.startCamera();
+//		cam = new Camera(1);
+//		cam.startCamera();
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 	}
 	
@@ -115,14 +111,13 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		timer.start();
 		 
-		drive.parabolicMecanum(-xbox.getLeftStick().getX(), xbox.getLeftStick().getY(), -xbox.getRightStick().getX());
+		drive.parabolicMecanum(xbox.getLeftStick().getX(), -xbox.getLeftStick().getY(), xbox.getRightStick().getX(), 6);
 	
-		wench.set(pad.getAxis(1));
+		winch.set(pad.getAxis(1));
 //		arms.servos[0].set(0);
 //		arms.servos[1].set(90);
 		arms.servoState(pad.getButton(1));
 		kicker.servoState(pad.getButton(0));
-		drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4), 3);
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));		
 	}

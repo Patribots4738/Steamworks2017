@@ -16,8 +16,12 @@ public class PIDMecanumDrive {
 		
 		for(int i = 0; i < ports.length; i++){
 //		for(int i : ports){
-			motors[i] = new PIDVictorSP(ports[i], 2*i, 2*i + 1, 4, Kp, Ki, Kd);
+			motors[i] = new PIDVictorSP(ports[i], 2*ports[i], 2*ports[i] + 1, 4, Kp, Ki, Kd);
 		}
+	}
+	
+	public PIDMecanumDrive(PIDVictorSP[] motors) {
+		this.motors = motors;
 	}
 	
 	public PIDMecanumDrive(double radius, double Kp, double Ki, double Kd, PIDVictorSP... motors){
