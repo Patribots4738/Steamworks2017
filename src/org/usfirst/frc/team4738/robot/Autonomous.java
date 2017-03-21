@@ -121,9 +121,8 @@ public class Autonomous{
 	
 	public void autonomousChooser(int autoNum){
 		switch (autoNum) {
-<<<<<<< HEAD
-		//SET SPEED VALUES: movement: .75, rotation: .5
-		//When robot is in middle of field
+		
+		//Middle of field
 		case 0:
 			
 			/*move(93, .5, 0);
@@ -145,26 +144,8 @@ public class Autonomous{
 			rotate(60, .5, 7);
 			move(45, .5, 8);
 			stop(9);
-			*/
-=======
-		
-		//SET SPEED VALUES: movement: .75, rotation: .5
-		//When robot is in middle of field
-		case 0:
-			move(93, .5, 0);
-			move( 1, .2, 1); //This is manual softening code
-			stop(2);
-			timedWait(3000, 3);
-			// setArms(true, 3);
-			move(93, -.5, 4);
-			stop(5);
-			//degrees may need to be 10 less than the actual value due to drift
-			rotate(60, .5, 6);
-			move(45, .5, 7);
-			stop(8);
->>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
-		break;
-		
+			*/		
+			
 		//When the robot is on the right side of the field
 		case 1:
 			move(105, .5, 0);
@@ -174,7 +155,6 @@ public class Autonomous{
 			move(54, .5, 4);
 			stop(5);
 			timedWait(1.5, 6);
-<<<<<<< HEAD
 			setArms(true, 7);
 			timedWait(.5, 8);
 			setKicker(true, 9);
@@ -183,19 +163,7 @@ public class Autonomous{
 			//degrees may need to be 10 less than the actual value due to drift
 			rotate(-60, .5, 12);
 			move(86, .5, 13);
-			stop(14);
-=======
-			//setArms(true, 7);
-			timedWait(.5, 8);
-			//setKicker(true, 9);
-			move(-54, .5, 10);
-			stop(9);
-			//degrees may need to be 10 less than the actual value due to drift
-			rotate(-60, .5, 11);
-			move(86, .5, 12);
-			stop(13);
->>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
-			
+			stop(14);			
 		break;
 		
 		//When the robot is on the left side of the field
@@ -207,31 +175,20 @@ public class Autonomous{
 			move(54, .75, 4);
 			stop(5);
 			timedWait(1.5, 6);
-<<<<<<< HEAD
 			setArms(true, 7);
 			timedWait(.5, 8);
 			setKicker(true, 9);
-=======
-			//setArms(true, 7);
-			timedWait(.5, 8);
-			//setKicker(true, 9);
->>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 			timedWait(1, 10);
 			move(-54, .75, 11);
 			stop(12);
 			//degrees may need to be 10 less than the actual value due to drift
 			rotate(60, .5, 13);
 			move(86, .75, 14);
-<<<<<<< HEAD
-			stop(15);
-=======
-			stop(14);
->>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
-			
+			stop(15);			
 		break;
 		
 		//middle gear autonomous
-		//27 wasn't long enough, 29.5 may be right
+		//1 unit of distance == 5.5 actual distance
 		case 3:
 			move(29.5, -0.25, 0);
 			stop(1);

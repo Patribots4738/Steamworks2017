@@ -30,18 +30,19 @@ public class Camera {
 			cam[i] = new UsbCamera("USB Camera " + i, i);
 			cam[i].setFPS(30);
 			cam[i].setResolution(320, 240);
-<<<<<<< HEAD
+			
+			//seems to be most recent
 			inputs[i] = new CvSink(i + "");
 			inputs[i].setSource(cam[i]);
 			
 			System.out.println(inputs[i]);
 			System.out.println(cam[i]);
-=======
+			
+			//idk if recent or not
 			//CameraServer.getInstance().addCamera(cam[i]);
 			inputs[i] = CameraServer.getInstance().getVideo(cam[i]);
 			inputs[i].setSource(cam[i]);
 			//CameraServer.getInstance().addServer(inputs[i]);
->>>>>>> 2180ce9854ca5b36b8445aadbf40ac7df2603b2e
 		}
 		
 		output = CameraServer.getInstance().putVideo("Video", 320, 240);
