@@ -16,5 +16,6 @@ public class Constants {
 	DRIVER_STATION_PORT={0,1,2,3,4,5};
 	
 	public static final double
-	TOP_SPEED = 210;
+	TOP_SPEED = 210,
+	GEAR_RATIO = 1;
 }
