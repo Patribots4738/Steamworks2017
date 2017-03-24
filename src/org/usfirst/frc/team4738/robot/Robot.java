@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	
-	public static double GEAR_RATIO = 1;
-	
 	//Cheeki Breeki
 	PIDVictorSP[] motors;
 	VictorSP winch;
@@ -46,13 +44,13 @@ public class Robot extends IterativeRobot {
 		
 		motors = new PIDVictorSP[4];
 		
-		motors[0] = new PIDVictorSP(7, 2, 3, 3 * GEAR_RATIO, 0, 0, 0); // front left
-		motors[1] = new PIDVictorSP(8, 6, 7, 3 * GEAR_RATIO, 0, 0, 0);// back left
-		motors[2] = new PIDVictorSP(6, 0, 1, 3 * GEAR_RATIO, 0, 0, 0);// front right
-		motors[3] = new PIDVictorSP(9, 4, 5, 3 * GEAR_RATIO, 0, 0, 0);// back right
+		motors[0] = new PIDVictorSP(7, 2, 3, 3 * Constants.GEAR_RATIO, 0, 0, 0); // front left
+		motors[1] = new PIDVictorSP(8, 6, 7, 3 * Constants.GEAR_RATIO, 0, 0, 0);// back left
+		motors[2] = new PIDVictorSP(6, 0, 1, 3 * Constants.GEAR_RATIO, 0, 0, 0);// front right
+		motors[3] = new PIDVictorSP(9, 4, 5, 3 * Constants.GEAR_RATIO, 0, 0, 0);// back right
 		
 		// !!!!!1 to GEAR_RATIO!!!, or GEAR_RATIO to 1 either way 
-		drive = new PIDMecanumDrive(3 * GEAR_RATIO, 0, 0, 0, motors);
+		drive = new PIDMecanumDrive(3 * Constants.GEAR_RATIO, 0, 0, 0, motors);
 		/*encoder1 = new Encoder(0, 1, 4);
 		encoder2 = new Encoder(2, 3, 4);
 		encoder3 = new Encoder(4, 5, 4);
