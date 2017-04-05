@@ -7,6 +7,7 @@ import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
+import org.usfirst.frc.team4738.wrapper.vision.Camera;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -24,7 +25,7 @@ public class Robot extends IterativeRobot {
 	XboxController xbox;
 	Gamepad pad;
 	MultiServo arms, kicker;
-//	Camera cam;
+	Camera cam;
 	
 	public void robotInit() {
 		//arms = new Arms(0, 1);
@@ -62,10 +63,9 @@ public class Robot extends IterativeRobot {
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
 		winch = new VictorSP(5);
-		/*try{
-			cam = new Camera(1);
-			cam.startCamera();
-		} catch(Exception e){}*/
+		try{
+			cam = new Camera(2);
+		} catch(Exception e){}
 		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
