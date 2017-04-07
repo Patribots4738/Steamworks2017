@@ -11,19 +11,33 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-public class ObjectDetector {
+public class ObjectDetector{
 	
 	double actualHeight = 3, focalLength = 458, FOV = 80;
 	
 	Scalar upperBound, lowerBound;
-	Mat erodeElement, dialateElement;
+	Mat erodeElement, dialateElement, currFrame;
+	
+	Thread processingThread;
+	VisionObject[] lastObjects;
 	
 	public ObjectDetector(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
 		this.focalLength = focalLength;
 		this.actualHeight = actualHeight; //This is the height of the object you are trying to detect
+		this.processingThread = new Thread(new DetectorThread(this));
 		this.FOV = FOV;
 		erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*erode_size + 1, 2*erode_size+1));
 		dialateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*dialate_size + 1, 2*dialate_size+1));
+	}
+	
+	public VisionObject[] detectObjects(Mat mat){			
+		currFrame = mat;
+		
+		if (processingThread.getState() != Thread.State.RUNNABLE){
+			processingThread.start();
+		}
+		
+		return lastObjects;
 	}
 	
 	//This finds distance using triangle similarity, you can find a useful doc in vision equations 
@@ -66,6 +80,21 @@ public class ObjectDetector {
 		//In case you are wondering, this is how you convert an arraylist to an array
 		//It's => ArrayList.toArray(new Type[ArrayList.size()]);
 		
-		return objects.toArray(new VisionObject[objects.size()]);
+		lastObjects = objects.toArray(new VisionObject[objects.size()]);
+		return lastObjects;
+	}
+}
+
+class DetectorThread implements Runnable{
+
+	ObjectDetector detector;
+	
+	public DetectorThread(ObjectDetector detector){
+		this.detector = detector;
+	}
+	
+	@Override
+	public void run() {
+		detector.findObjects(detector.currFrame);
 	}
 }
