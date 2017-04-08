@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4738.robot;
 
-import org.opencv.core.Scalar;
 import org.usfirst.frc.team4738.wrapper.Constants;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
@@ -9,7 +8,6 @@ import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
 import org.usfirst.frc.team4738.wrapper.vision.Camera;
-import org.usfirst.frc.team4738.wrapper.vision.VisionObject;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -67,8 +65,10 @@ public class Robot extends IterativeRobot {
 		try{
 			cam = new Camera(1);
 			cam.startCamera();
-			cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
-		} catch(Exception e){}
+		} catch(Exception e){
+			System.err.println(e.toString());
+		}
+		//cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
 		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
@@ -79,14 +79,6 @@ public class Robot extends IterativeRobot {
 //		cam = new Camera(1);
 //		cam.startCamera();
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
-	}
-	
-	public void DisabledPeriodic(){
-		VisionObject[] detectedObjects = cam.detectObjects();
-		for(int i = 0; i < detectedObjects.length; i++){
-			System.out.println(detectedObjects[i].distance[1]);
-		}		
-		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 	}
 	
 	int autoMode = 3;
@@ -124,7 +116,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		timer.start();
-		 
+		
 		drive.parabolicMecanum(xbox.getLeftStick().getX(), -xbox.getLeftStick().getY(), xbox.getRightStick().getX(), 6);
 	
 		winch.set(pad.getAxis(1));
@@ -136,6 +128,14 @@ public class Robot extends IterativeRobot {
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
 		
 		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
+		
+		/*try{
+			VisionObject[] detectedObjects = cam.detectObjects();
+			for(int i = 0; i < detectedObjects.length; i++){
+				System.out.println(i + " " + detectedObjects[i].distance[1]);
+			}
+		} catch(IllegalThreadStateException e){e.printStackTrace();}*/
+		
 	}
 	
 		public void testPeriodic() {

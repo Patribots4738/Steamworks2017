@@ -10,6 +10,8 @@ public class Gyro {
 	 
 	public Gyro(int port){
 		gyro = new AnalogGyro(port);
+		gyro.setSensitivity(0.001695);
+		gyro.reset();
 		average = new MovingAverage(5);
 	}
 	

@@ -50,7 +50,6 @@ public class Camera {
 				public void run() {
 					while(!Thread.interrupted()){
 						camUpdate();
-						
 					}
 				}
 			}).start();
@@ -63,14 +62,14 @@ public class Camera {
 
 		public void pushMat(Mat frame){
 			output.putFrame(frame);
-			System.out.println("Frame");
 			frame.release();
 		}
 		
 		public Mat updateCapture(){
 			Mat frame = new Mat();
 			inputs[camera].grabFrame(frame);
-			currentFrame = frame;
+			currentFrame.release();
+			currentFrame = frame.clone();
 			return frame;
 		}
 		
@@ -103,6 +102,7 @@ public class Camera {
 		}
 		
 		public VisionObject[] detectObjects(){
+			System.out.println(currentFrame.empty());
 			return detector.detectObjects(currentFrame);
 		}
 }

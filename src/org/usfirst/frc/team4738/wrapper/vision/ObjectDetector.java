@@ -22,19 +22,25 @@ public class ObjectDetector{
 	VisionObject[] lastObjects;
 	
 	public ObjectDetector(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
 		this.focalLength = focalLength;
 		this.actualHeight = actualHeight; //This is the height of the object you are trying to detect
 		this.processingThread = new Thread(new DetectorThread(this));
 		this.FOV = FOV;
 		erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*erode_size + 1, 2*erode_size+1));
 		dialateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new  Size(2*dialate_size + 1, 2*dialate_size+1));
+		lastObjects = new VisionObject[0];
 	}
 	
 	public VisionObject[] detectObjects(Mat mat){			
-		currFrame = mat;
-		
+		currFrame = mat.clone();
+		System.out.println(processingThread.getState());
 		if (processingThread.getState() != Thread.State.RUNNABLE){
-			processingThread.start();
+			//processingThread = new Thread(new DetectorThread(this));
+			System.out.println(currFrame.empty());
+			
+			//processingThread.start();
 		}
 		
 		return lastObjects;
@@ -47,7 +53,13 @@ public class ObjectDetector{
 		
 		Mat src = mat.clone(), dst = mat.clone();
 		Mat hierarchy = new Mat(); 
-		Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGR2HSV); //Converts the image from RGB to HSV color space
+		
+		if(mat.empty()){
+			System.err.println("No Frame to find objects in");
+			return lastObjects;
+		}
+		
+		Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGR2HSV_FULL); //Converts the image from RGB to HSV color space
 		Imgproc.GaussianBlur(dst, dst, new Size(5, 5),  2, 2); //Surprise! This blur blurs the image
 		
 		//This return a binary image(black and white) of the pixels that have a HSV value between the upper and lower bound
@@ -73,6 +85,8 @@ public class ObjectDetector{
 			double[] distance = {distanceForwards, distanceHorizontal}; //I'm sure you can figure out what this is doing...
 			obj.distance = distance;
 			obj.distanceMagnitude = Math.sqrt((distanceHorizontal * distanceHorizontal) + (distanceForwards * distanceForwards)); //Our lord pythagoras with his great theorem
+			
+			Imgproc.circle(mat, rect.center, 5, new Scalar(0, 255, 0));
 			
 			objects.add(obj);
 		}
