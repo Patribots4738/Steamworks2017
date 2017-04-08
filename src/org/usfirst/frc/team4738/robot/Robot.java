@@ -43,8 +43,7 @@ public class Robot extends IterativeRobot {
 		gyro = new Gyro(0);
 		timer = new Timer();
 
-		//9 - back right motor, 8 - back l, 7 - fl, 6 - fr, 5 - winch
-
+		//9 - br, 8 - bl, 7 - fl, 6 - fr, 5 - winch
 		
 		motors = new PIDVictorSP[4];
 		
@@ -86,13 +85,17 @@ public class Robot extends IterativeRobot {
 		VisionObject[] detectedObjects = cam.detectObjects();
 		for(int i = 0; i < detectedObjects.length; i++){
 			System.out.println(detectedObjects[i].distance[1]);
-		}
+		}		
+		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 	}
 	
 	int autoMode = 3;
 	
 	public void autonomousInit(){ 
 		autoDrive.reset();
+		
+		//reset encoder for top left wheel, which has the encoder we use for the autonomous
+		drive.motors[0].encoder.reset();
 		
 //		try {
 //			autoMode = Integer.parseInt(SmartDashboard.getString("DB/String 0", "0"));
@@ -116,6 +119,7 @@ public class Robot extends IterativeRobot {
 		drive.setPID(0, 0, 0);
 		drive.motors[0].victor.stopMotor();
 		drive.linearMecanum(0, 0, 0, 16);
+		gyro.reset();
 	}
 
 	public void teleopPeriodic() {
@@ -129,7 +133,9 @@ public class Robot extends IterativeRobot {
 		arms.servoState(pad.getButton(1));
 		kicker.servoState(pad.getButton(0));
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
-		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));		
+		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
+		
+		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 	}
 	
 		public void testPeriodic() {
