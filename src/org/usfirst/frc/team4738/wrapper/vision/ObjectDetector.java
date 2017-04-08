@@ -24,6 +24,11 @@ public class ObjectDetector{
 	public ObjectDetector(double focalLength, double actualHeight, double FOV, int erode_size, int dialate_size, Scalar upper, Scalar lower){
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		
+		currFrame = new Mat();
+		
+		this.upperBound = upper;
+		this.lowerBound = lower;
+		
 		this.focalLength = focalLength;
 		this.actualHeight = actualHeight; //This is the height of the object you are trying to detect
 		this.processingThread = new Thread(new DetectorThread(this));
@@ -33,14 +38,14 @@ public class ObjectDetector{
 		lastObjects = new VisionObject[0];
 	}
 	
-	public VisionObject[] detectObjects(Mat mat){			
-		currFrame = mat.clone();
+	public VisionObject[] detectObjects(Mat mat){	
+		//currFrame.release();
+		currFrame = mat;
+		
 		System.out.println(processingThread.getState());
 		if (processingThread.getState() != Thread.State.RUNNABLE){
-			//processingThread = new Thread(new DetectorThread(this));
-			System.out.println(currFrame.empty());
-			
-			//processingThread.start();
+			processingThread = new Thread(new DetectorThread(this));
+			processingThread.start();
 		}
 		
 		return lastObjects;
@@ -52,7 +57,7 @@ public class ObjectDetector{
 		Core.flip(mat, mat, 1); //Flips the image horizontally so it isn't mirrored
 		
 		Mat src = mat.clone(), dst = mat.clone();
-		Mat hierarchy = new Mat(); 
+		Mat hierarchy = new Mat();
 		
 		if(mat.empty()){
 			System.err.println("No Frame to find objects in");
@@ -97,6 +102,8 @@ public class ObjectDetector{
 		lastObjects = objects.toArray(new VisionObject[objects.size()]);
 		return lastObjects;
 	}
+	
+	//public void setUpperBound(float h, )
 }
 
 class DetectorThread implements Runnable{
@@ -110,5 +117,6 @@ class DetectorThread implements Runnable{
 	@Override
 	public void run() {
 		detector.findObjects(detector.currFrame);
+		return;
 	}
 }

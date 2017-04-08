@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4738.robot;
 
+import org.opencv.core.Scalar;
 import org.usfirst.frc.team4738.wrapper.Constants;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
@@ -8,6 +9,7 @@ import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
 import org.usfirst.frc.team4738.wrapper.vision.Camera;
+import org.usfirst.frc.team4738.wrapper.vision.VisionObject;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -63,12 +65,12 @@ public class Robot extends IterativeRobot {
 		pad = new Gamepad(1);
 		winch = new VictorSP(5);
 		try{
-			cam = new Camera(1);
+			cam = new Camera();
 			cam.startCamera();
 		} catch(Exception e){
 			System.err.println(e.toString());
 		}
-		//cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
+		cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
 		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
@@ -129,12 +131,12 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
 		
-		/*try{
+		try{
 			VisionObject[] detectedObjects = cam.detectObjects();
 			for(int i = 0; i < detectedObjects.length; i++){
 				System.out.println(i + " " + detectedObjects[i].distance[1]);
 			}
-		} catch(IllegalThreadStateException e){e.printStackTrace();}*/
+		} catch(IllegalThreadStateException e){e.printStackTrace();}
 		
 	}
 	

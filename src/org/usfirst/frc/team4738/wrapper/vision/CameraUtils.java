@@ -11,7 +11,7 @@ public class CameraUtils{
 		Mat dst = frame; //This is your destination mat set it as the input and output of the draw functions
 		//Core.flip(frame, dst, -1);
 		dst = drawCrosshair(dst);
-		dst = drawDepthLine(dst);
+		//dst = drawDepthLine(dst);
 		return dst;
 	}
 	
@@ -22,7 +22,7 @@ public class CameraUtils{
 	} 
 	
 	public static Mat drawCrosshair(Mat frame){
-		Imgproc.circle(frame, new Point(frame.width() / 2, frame.height() / 2), 3, new Scalar(0, 128, 0));
+		Imgproc.circle(frame, new Point(frame.width() / 2, frame.height() / 2), 5, new Scalar(0, 128, 0));
 		return frame;
 	}
 }

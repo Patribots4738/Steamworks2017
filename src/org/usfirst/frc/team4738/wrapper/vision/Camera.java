@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4738.wrapper.vision;
 	
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
@@ -10,28 +11,25 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Camera {
 
-		UsbCamera[] cam;
+		UsbCamera cam;
 		int camera = 0;
 		
-		CvSink[] inputs;
+		CvSink input;
 		CvSource output;
 		
 		ObjectDetector detector;
 		Mat currentFrame;
 		
-		public Camera(int numCamera){
-			cam = new UsbCamera[numCamera];
-			inputs = new CvSink[numCamera];
+		public Camera(){
+			cam = CameraServer.getInstance().startAutomaticCapture();
+			cam.setFPS(30);
+			cam.setResolution(320, 240);
+			cam.setExposureManual(0);
 			
-			for(int i = 0; i < numCamera; i++){
-				cam[i] = CameraServer.getInstance().startAutomaticCapture(i);
-				cam[i].setFPS(30);
-				cam[i].setResolution(320, 240);
-				cam[i].setExposureManual(-5);
-				
-				inputs[i] = CameraServer.getInstance().getVideo(cam[i].getName());
-			}
+			currentFrame = new Mat();
+			currentFrame.setTo(new Scalar(0,0,0));
 			
+			input = CameraServer.getInstance().getVideo();
 			output = CameraServer.getInstance().putVideo("Video", 320, 240);
 		}
 		
@@ -67,42 +65,18 @@ public class Camera {
 		
 		public Mat updateCapture(){
 			Mat frame = new Mat();
-			inputs[camera].grabFrame(frame);
+			input.grabFrame(frame);
 			currentFrame.release();
 			currentFrame = frame.clone();
 			return frame;
 		}
 		
-		public int setCamera(int camNum){
-			
-			if(camNum > cam.length - 1 || camNum < 0){
-				return camera;
-			}
-			
-			for(int i = 0; i < cam.length; i++){
-				inputs[i].setEnabled(false);
-			}
-			
-			inputs[camera].setEnabled(true);
-			
-			camera = camNum;
-			return camNum;
-		}
-		
-		public void cycleCamera(){
-			if(camera > cam.length - 1){
-				setCamera(0);
-				return;
-			}
-			setCamera(++camera);
-		}
 		
 		public VisionObject[] detectObjects(Mat frame){
 			return detector.findObjects(frame);
 		}
 		
 		public VisionObject[] detectObjects(){
-			System.out.println(currentFrame.empty());
 			return detector.detectObjects(currentFrame);
 		}
 }
