@@ -43,7 +43,7 @@ public class ObjectDetector{
 		currFrame = mat;
 		
 		System.out.println(processingThread.getState());
-		if (processingThread.getState() != Thread.State.RUNNABLE){
+		if (processingThread.getState() == Thread.State.TERMINATED){
 			processingThread = new Thread(new DetectorThread(this));
 			processingThread.start();
 		}
