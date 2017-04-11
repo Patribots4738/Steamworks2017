@@ -38,10 +38,21 @@ public class ObjectDetector{
 		lastObjects = new VisionObject[0];
 	}
 	
-	public VisionObject[] detectObjects(Mat mat){	
+
+	/** 
+	* @param mat The frame that will be checked for objects
+	* @param useMultipleThreads If true the object detection code will run on the same thread that is displaying the camera meaning that it will try and detect an object for ever frame
+	*
+	* @return returns either the most recent detected object or the detected object
+	**/
+	public VisionObject[] detectObjects(Mat mat, boolean useMultipleThreads){	
 		//currFrame.release();
 		currFrame = mat;
 		
+		if(useMultipleThreads){
+			return findObjects(mat);
+		}
+
 		System.out.println(processingThread.getState());
 		if (processingThread.getState() == Thread.State.TERMINATED){
 			processingThread = new Thread(new DetectorThread(this));

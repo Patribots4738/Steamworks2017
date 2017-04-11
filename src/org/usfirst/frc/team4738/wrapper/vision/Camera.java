@@ -73,10 +73,10 @@ public class Camera {
 		
 		
 		public VisionObject[] detectObjects(Mat frame){
-			return detector.findObjects(frame);
+			return detector.findObjects(frame, false);
 		}
 		
 		public VisionObject[] detectObjects(){
-			return detector.detectObjects(currentFrame);
+			return detector.detectObjects(currentFrame, false);
 		}
 }
