@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4738.robot;
 
-import org.opencv.core.Scalar;
 import org.usfirst.frc.team4738.wrapper.Constants;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
@@ -8,8 +7,6 @@ import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
 import org.usfirst.frc.team4738.wrapper.XboxController;
-import org.usfirst.frc.team4738.wrapper.vision.Camera;
-import org.usfirst.frc.team4738.wrapper.vision.VisionObject;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -27,7 +24,7 @@ public class Robot extends IterativeRobot {
 	XboxController xbox;
 	Gamepad pad;
 	MultiServo arms, kicker;
-	Camera cam;
+//	Camera cam;
 	
 	public void robotInit() {
 		//arms = new Arms(0, 1);
@@ -47,10 +44,10 @@ public class Robot extends IterativeRobot {
 		
 		motors = new PIDVictorSP[4];
 		
-		motors[0] = new PIDVictorSP(7, 2, 3, 3 * Constants.GEAR_RATIO, 0, 0, 0); // front left
-		motors[1] = new PIDVictorSP(8, 6, 7, 3 * Constants.GEAR_RATIO, 0, 0, 0);// back left
-		motors[2] = new PIDVictorSP(6, 0, 1, 3 * Constants.GEAR_RATIO, 0, 0, 0);// front right
-		motors[3] = new PIDVictorSP(9, 4, 5, 3 * Constants.GEAR_RATIO, 0, 0, 0);// back right
+		motors[0] = new PIDVictorSP(7, 2, 3, 3, 0, 0, 0); // front left
+		motors[1] = new PIDVictorSP(8, 6, 7, 3, 0, 0, 0);// back left
+		motors[2] = new PIDVictorSP(6, 0, 1, 3, 0, 0, 0);// front right
+		motors[3] = new PIDVictorSP(9, 4, 5, 3, 0, 0, 0);// back right
 		
 		// !!!!!1 to GEAR_RATIO!!!, or GEAR_RATIO to 1 either way 
 		drive = new PIDMecanumDrive(3 * Constants.GEAR_RATIO, 0, 0, 0, motors);
@@ -65,12 +62,12 @@ public class Robot extends IterativeRobot {
 		pad = new Gamepad(1);
 		winch = new VictorSP(5);
 		try{
-			cam = new Camera();
-			cam.startCamera();
+//			cam = new Camera();
+//			cam.startCamera();
 		} catch(Exception e){
 			System.err.println(e.toString());
 		}
-		cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
+//		cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
 		
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
 //		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
@@ -91,16 +88,18 @@ public class Robot extends IterativeRobot {
 		//reset encoder for top left wheel, which has the encoder we use for the autonomous
 		drive.motors[0].encoder.reset();
 		
-//		try {
-//			autoMode = Integer.parseInt(SmartDashboard.getString("DB/String 0", "0"));
-//		} catch (Exception e) {
-//			autoMode = 0;
-//		}
+		try {
+			autoMode = Integer.parseInt(SmartDashboard.getString("DB/String 0", "0"));
+		} catch (Exception e) {
+			autoMode = 0;
+		}
+		
+		System.out.println("Auto Mode: " + autoMode);
 	}
 
 	public void autonomousPeriodic(){
 		
-		autoDrive.autonomousChooser(4);
+		autoDrive.autonomousChooser(autoMode);
 		
 		for(int i = 0; i < 4; i++){
 			SmartDashboard.putNumber("Encoder " + i, drive.motors[i].encoder.getDistance());
@@ -129,14 +128,15 @@ public class Robot extends IterativeRobot {
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
 		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
 		
-		SmartDashboard.putString("Gyro angle", "" + gyro.getAngle());
+		SmartDashboard.putNumber("Gyro", gyro.getAngle());
 		
-		try{
-			VisionObject[] detectedObjects = cam.detectObjects();
-			for(int i = 0; i < detectedObjects.length; i++){
-				System.out.println(i + " " + detectedObjects[i].distance[1]);
-			}
-		} catch(IllegalThreadStateException e){e.printStackTrace();}
+		
+//		try{
+//			VisionObject[] detectedObjects = cam.detectObjects();
+//			for(int i = 0; i < detectedObjects.length; i++){
+//				System.out.println(i + " " + detectedObjects[i].distance[1]);
+//			}
+//		} catch(IllegalThreadStateException e){e.printStackTrace();}
 		
 	}
 	

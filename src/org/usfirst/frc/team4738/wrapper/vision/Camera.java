@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4738.wrapper.vision;
 	
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
@@ -73,7 +72,7 @@ public class Camera {
 		
 		
 		public VisionObject[] detectObjects(Mat frame){
-			return detector.findObjects(frame, false);
+			return detector.detectObjects(frame, false);
 		}
 		
 		public VisionObject[] detectObjects(){

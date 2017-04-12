@@ -16,11 +16,13 @@ public class Encoder{
 	 * @param port2 Channel B
 	 * @param radius Radius of the wheel.
 	 */
+	public static int PULSES_PER_ROTATION = 2048;
+	
 	public Encoder(int port1, int port2, double radius){
 		encoder = new edu.wpi.first.wpilibj.Encoder(port1, port2, false, EncodingType.k4X);
-		encoder.setDistancePerPulse(0.001);
-		circumference = radius * 2 * Math.PI;
-		conversionFactor = ClicksPerRotation / 360;
+		encoder.setDistancePerPulse((radius * Math.PI * 2 * Constants.GEAR_RATIO) / PULSES_PER_ROTATION);
+//		circumference = radius * 2 * Math.PI;
+//		conversionFactor = ClicksPerRotation / 360;
 		
 		encoder.reset();
 	}
@@ -30,7 +32,8 @@ public class Encoder{
 	 */
 	//switched the getDistance and ClicksPerRotation
 	public double getDistance(){
-		return circumference * (encoder.getDistance() / ClicksPerRotation);
+//		return circumference * (encoder.getDistance() / ClicksPerRotation);
+		return encoder.getDistance();
 	}
 	
 	/**
