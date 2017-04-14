@@ -1,4 +1,9 @@
 package org.usfirst.frc.team4738.utils;
+
+/**
+ * @author Unknown
+ * Simple data encapsulation class.
+ */
 public class Axes {
 
 	double X, Y, Z;
@@ -16,6 +21,11 @@ public class Axes {
 		this.Y = Y;
 	}
 	
+	/**
+	 * @param X Value of x-axis.
+	 * @param Y Value of y-axis.
+	 * @param Z Value of z-axis.
+	 */
 	public Axes(double X, double Y, double Z){
 		this.X = X;
 		this.Y = Y;

@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4738.utils;
 
-
+/**
+ * @author Various peeplz
+ * Random useful math functions
+ */
 public class Mathd{
 
 	public static double clamp(double value, double max, double min){

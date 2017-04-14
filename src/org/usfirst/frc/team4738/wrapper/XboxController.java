@@ -7,7 +7,8 @@ import org.usfirst.frc.team4738.enums.XboxButtons;
  * @author Owen
  */
 public class XboxController extends Gamepad implements org.usfirst.frc.team4738.interfaces.XboxController {
-
+	
+	// Nothing to see here, just basic data encapsulation
 	public XboxController(int port) {
 		super(port);
 	}

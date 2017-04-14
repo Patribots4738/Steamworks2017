@@ -8,13 +8,6 @@ public class ToggleButton {
 	boolean lastPress = false, lastPressToggle = false;
 	private boolean toggle = false;
 	
-	public ToggleButton(){
-		//that's it, you're done
-		//yay...
-		//goddamn it
-		//ikr (-_-)
-	}
-	
 	/**
 	 * @param state Input button state.
 	 * @return The toggle's state.
@@ -31,7 +24,7 @@ public class ToggleButton {
 	
 	/**
 	 * @param state State of the button being released.
-	 * @return Returns true on the button's release.
+	 * @return Returns true only once per button release.
 	 */
 	public boolean getUp(boolean state){
 		if(lastPress == true && state == false){ 
@@ -44,7 +37,7 @@ public class ToggleButton {
 	
 	/**
 	 * @param state State of the button being pressed down.
-	 * @return Returns true on the button press.
+	 * @return Returns true only once per button press.
 	 */
 	public boolean getDown(boolean state){
 		if(lastPress == false && state == true){

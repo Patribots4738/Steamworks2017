@@ -62,12 +62,19 @@ public class Autonomous {
 		}
 	}
 
+	boolean hasStarted = false;
 	public void rotate(double degrees, double speed, int order) {
 		if (order == posInOrder) {
+			if(!hasStarted){
+				gyro.reset();
+				System.out.println("Reset Gyros");
+				hasStarted = true;
+			}
 			drive.linearMecanum(0, 0, speed);
-			gyro.reset();
-			if (gyro.getAngle() >= degrees) {
+			if (Math.abs(gyro.gyro.getAngle()) >= (degrees)) {
 				drive.linearMecanum(0, 0, 0);
+				hasStarted = false;
+				posInOrder++;
 			}
 			/*
 			 * if(gyro.getAngle() > degrees && gyro.getAngle() < degrees + 5){
@@ -91,6 +98,7 @@ public class Autonomous {
 
 	public void reset() {
 		posInOrder = 0;
+		drive.resetEncoders();
 		gyro.reset();
 	}
 
@@ -121,6 +129,15 @@ public class Autonomous {
 	public void autonomousChooser(int autoNum) {
 		switch (autoNum) {
 
+		case -1:
+			rotate(90, .25, 0);
+			rotate(90, .25, 1);
+			rotate(90, .25, 2);
+			rotate(90, .25, 3);
+			stop(4);
+			move(1, -.25, 5);
+			break;
+		
 		// Middle of field
 		case 0:
 

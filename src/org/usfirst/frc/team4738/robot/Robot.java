@@ -1,11 +1,15 @@
 package org.usfirst.frc.team4738.robot;
 
-import org.usfirst.frc.team4738.wrapper.Constants;
+import org.usfirst.frc.team4738.autonomousIO.DummyGamepad;
+import org.usfirst.frc.team4738.autonomousIO.DummyXbox;
+import org.usfirst.frc.team4738.autonomousIO.FileManager;
+import org.usfirst.frc.team4738.autonomousIO.FileManager.FileType;
 import org.usfirst.frc.team4738.wrapper.Gamepad;
 import org.usfirst.frc.team4738.wrapper.Gyro;
 import org.usfirst.frc.team4738.wrapper.PIDMecanumDrive;
 import org.usfirst.frc.team4738.wrapper.PIDVictorSP;
 import org.usfirst.frc.team4738.wrapper.Timer;
+import org.usfirst.frc.team4738.wrapper.ToggleButton;
 import org.usfirst.frc.team4738.wrapper.XboxController;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -13,133 +17,143 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
-	
-	//Cheeki Breeki
+
+	// Cheeki Breeki
 	PIDVictorSP[] motors;
 	VictorSP winch;
-	Gyro gyro;
 	PIDMecanumDrive drive;
+
+	Gyro gyro;
 	Autonomous autoDrive;
 	Timer timer;
+	FileManager manager;
+
 	XboxController xbox;
 	Gamepad pad;
+	DummyXbox dummyXbox; // Man, what a low IQ
+	DummyGamepad dummyPad;
+
+	ToggleButton toggle = new ToggleButton();
+
 	MultiServo arms, kicker;
-//	Camera cam;
-	
+	// Camera cam;
+
 	public void robotInit() {
-		//arms = new Arms(0, 1);
-		//kicker = new Kicker(2, 3);
-		//used to be Arms(4)
-		arms = new MultiServo(0, 1);
+		double[][] bounds = { { 0, 90 }, { 90, 0 } }; // Sets the bounds for the arm servos
+		double[][] kickBounds = { { 105, 60 }, { 60, 105 } }; // Same as ^, but for kicker
+
+		arms = new MultiServo(0, 1); // Init arms
+		kicker = new MultiServo(2, 3); // Init kicker
+		arms.setBounds(bounds); // Sets bounds as defined above
+		kicker.setBounds(kickBounds); // Ditto ^
 		
-		double[][] bounds = {{0, 90}, {90, 0}};
-		arms.setBounds(bounds);
-		double[][] kickBounds = {{105, 60}, {60, 105}};
-		kicker = new MultiServo(2, 3);
-		kicker.setBounds(kickBounds);
 		gyro = new Gyro(0);
 		timer = new Timer();
+		
+		/*	Motor Listing:		
+		 * Port 9: Back Right
+		 * Port 8: Back Left
+		 * Port 7: Front Left
+		 * Port 6: Front Right
+		 * Port 5: Winch
+		 */
+		motors = new PIDVictorSP[4]; // Initializes the array
 
-		//9 - br, 8 - bl, 7 - fl, 6 - fr, 5 - winch
-		
-		motors = new PIDVictorSP[4];
-		
 		motors[0] = new PIDVictorSP(7, 2, 3, 3, 0, 0, 0); // front left
 		motors[1] = new PIDVictorSP(8, 6, 7, 3, 0, 0, 0);// back left
 		motors[2] = new PIDVictorSP(6, 0, 1, 3, 0, 0, 0);// front right
 		motors[3] = new PIDVictorSP(9, 4, 5, 3, 0, 0, 0);// back right
 		
-		// !!!!!1 to GEAR_RATIO!!!, or GEAR_RATIO to 1 either way 
-		drive = new PIDMecanumDrive(3 * Constants.GEAR_RATIO, 0, 0, 0, motors);
-		/*encoder1 = new Encoder(0, 1, 4);
-		encoder2 = new Encoder(2, 3, 4);
-		encoder3 = new Encoder(4, 5, 4);
-		encoder4 = new Encoder(6, 7, 4);*/
-		
-//		drive = new PIDMecanumDrive(4, 0, 0, 0, new int[] {6, 7, 8, 9});
-//		drive = new PIDMecanumDrive(4, 0, 0, 0, 7, 6, 8, 9);
+		drive = new PIDMecanumDrive(motors); // Initalizes the drive functions
 		xbox = new XboxController(0);
 		pad = new Gamepad(1);
-		winch = new VictorSP(5);
-		try{
-//			cam = new Camera();
-//			cam.startCamera();
-		} catch(Exception e){
-			System.err.println(e.toString());
-		}
-//		cam.enableObjectDetection(448, 5, 80, 5, 5, new Scalar(130, 100, 100), new Scalar(110, 80, 75));
-		
+		winch = new VictorSP(5); // Initializes the winch motor
+
 		autoDrive = new Autonomous(drive, gyro, arms, kicker);
-//		drive = new PIDMecanumDrive(4, 0, 0, 0, 0, 1, 2, 3);
-		xbox = new XboxController(0);
-		pad = new Gamepad(1);
-		//wench = new VictorSP(5);
-		// pad = new XboxController(0);
-//		cam = new Camera(1);
-//		cam.startCamera();
-		autoDrive = new Autonomous(drive, gyro, arms, kicker);
-	}
-	
-	int autoMode = 3;
-	
-	public void autonomousInit(){ 
-		autoDrive.reset();
-		
-		//reset encoder for top left wheel, which has the encoder we use for the autonomous
-		drive.motors[0].encoder.reset();
-		
-		try {
-			autoMode = Integer.parseInt(SmartDashboard.getString("DB/String 0", "0"));
-		} catch (Exception e) {
-			autoMode = 0;
-		}
-		
-		System.out.println("Auto Mode: " + autoMode);
+		manager = new FileManager();
 	}
 
-	public void autonomousPeriodic(){
-		
-		autoDrive.autonomousChooser(autoMode);
-		
-		for(int i = 0; i < 4; i++){
-			SmartDashboard.putNumber("Encoder " + i, drive.motors[i].encoder.getDistance());
-		}
-		SmartDashboard.putString("Gyro", "" + gyro.getAngle());
-		
-	}
+	int autoMode = 0;
 	
-	public void telopInit(){
-		drive.setPID(0, 0, 0);
-		drive.motors[0].victor.stopMotor();
-		drive.linearMecanum(0, 0, 0, 16);
-		gyro.reset();
+	public void autonomousInit() {
+		autoMode = (int) SmartDashboard.getNumber("AutoMode", 0); // Retrieves the Auto Mode from dashboard
+		autoDrive.reset();
+		
+		if (autoMode == -2) {
+			drive.resetEncoders();  	// Resets all the encoders to zero.
+
+			manager.setFile("Autonomous", FileType.GP, false); // Opens the file called "Autonomous.GP" for reading controller instructions
+
+			dummyXbox = new DummyXbox(0, manager, 2);		// Creates the dummy controllers 
+			dummyPad = new DummyGamepad(1, manager, 2);
+		}	
+	}
+
+	public void autonomousPeriodic() {
+		if (autoMode == -2) {
+			SmartDashboard.putNumber("Gyro Angle", gyro.gyro.getAngle());	// Pushes the current core gyroscope angle to the dashboard	
+			dummyXbox.updateData();		// Updates the data from the data file currently opened in the file manager for reading.
+			dummyPad.updateData();			// Ditto ^
+	
+			drive.parabolicMecanum(dummyXbox.getLeftStick().getX(), -dummyXbox.getLeftStick().getY(),
+					dummyXbox.getRightStick().getX(), 6); // Tells the drive to drive to drive based on the dummy's input
+	
+			winch.set(dummyPad.getAxis(1));				// Ditto ^
+			arms.servoState(dummyPad.getButton(1));		// Ditto ^
+			kicker.servoState(dummyPad.getButton(0));	// Ditto ^
+		} else {
+			autoDrive.autonomousChooser(autoMode);
+		}
+	}
+
+	public void teleopInit() {
+		xbox.resetTimer();	// Resets the timers in the controller classes for recording.
+		pad.resetTimer();	// Ditto ^
+		
+		drive.setPID(0, 0, 0);	// Sets the PID constants, currently disabled
+		drive.motors[0].victor.stopMotor();		// Stops the motors at the start.
+		drive.linearMecanum(0, 0, 0, 16);		// Another attempt to stop the motors
+		gyro.reset();	// Resets the gyro to zero
+
+		if (SmartDashboard.getBoolean("IsRecording",false)) { // If the recording button in dashboard is ticked then
+			manager.createNewFile("Autonomous", FileType.GP, false, true); // Create a new autonomous file
+		}
+		
 	}
 
 	public void teleopPeriodic() {
-		timer.start();
+		SmartDashboard.putNumber("Gyro Angle", gyro.getOffsetAngle()); // Puts some data to the dashboard
+		// TODO: Remove the following when done debugging
+		SmartDashboard.putNumber("XboxTimer", xbox.getCurrentTime());		// Ditto ^
+		SmartDashboard.putNumber("JoystickTimer", pad.getCurrentTime());	// Ditto ^
 		
-		drive.parabolicMecanum(xbox.getLeftStick().getX(), -xbox.getLeftStick().getY(), xbox.getRightStick().getX(), 6);
-	
+		boolean recording = SmartDashboard.getBoolean("IsRecording", false); // Gets if we are recording
+
+		if (recording) {
+			manager.writeToFile(xbox.toString() + "\n" + pad.toString()); // If we are, then write the current data to the file
+		}
+
+		drive.parabolicMecanum(xbox.getLeftStick().getX(), -xbox.getLeftStick().getY(), xbox.getRightStick().getX(), 6); // Drive based on controller
+
 		winch.set(pad.getAxis(1));
-//		arms.servos[0].set(0);
-//		arms.servos[1].set(90);
 		arms.servoState(pad.getButton(1));
 		kicker.servoState(pad.getButton(0));
-		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
-		//drive.parabolicMecanum(xbox.getAxis(0), -xbox.getAxis(1), -xbox.getAxis(4));
-		
+
 		SmartDashboard.putNumber("Gyro", gyro.getAngle());
-		
-		
-//		try{
-//			VisionObject[] detectedObjects = cam.detectObjects();
-//			for(int i = 0; i < detectedObjects.length; i++){
-//				System.out.println(i + " " + detectedObjects[i].distance[1]);
-//			}
-//		} catch(IllegalThreadStateException e){e.printStackTrace();}
-		
+
+	}
+
+	@Override
+	public void testInit() {
+		timer.reset();
 	}
 	
-		public void testPeriodic() {
+	@Override
+	public void testPeriodic() {
+		if (timer.wait(5000D)) {
+			System.out.println(timer.getTime());
+			System.out.println((int)timer.getTime());
+			timer.reset();
+		}
 	}
 }

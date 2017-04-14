@@ -85,8 +85,7 @@ public class Gamepad implements org.usfirst.frc.team4738.interfaces.Gamepad{
 		for(int i = 1; i < joystick.getButtonCount(); i++){
 			stuff += ((joystick.getRawButton(i))) + ",";
 		}
-		stuff += joystick.getPOV() + "," + (int)timer.getTime()                  /*:)*/                           ;
-		System.out.println(stuff);
+		stuff += joystick.getPOV() + "," + (int)timer.getTime();
 		return stuff;
 	}
 
@@ -107,5 +106,13 @@ public class Gamepad implements org.usfirst.frc.team4738.interfaces.Gamepad{
 	@Override
 	public int getButtonCount() {
 		return joystick.getButtonCount();
+	}
+	
+	public void resetTimer(){
+		timer.reset();
+	}
+	
+	public double getCurrentTime() {
+		return timer.getTime();
 	}
 }
