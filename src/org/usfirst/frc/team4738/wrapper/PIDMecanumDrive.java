@@ -2,6 +2,8 @@ package org.usfirst.frc.team4738.wrapper;
 
 import org.usfirst.frc.team4738.interfaces.Gamepad;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class PIDMecanumDrive {
 	public PIDVictorSP[] motors;
 	Gamepad pad;
@@ -109,6 +111,11 @@ public class PIDMecanumDrive {
 	 */
 	public void parabolicMecanum(double x, double y, double rotation, double dampening){
 		
+		SmartDashboard.putNumber("Encoder0", motors[0].encoder.getDistance());
+		SmartDashboard.putNumber("Encoder1", motors[1].encoder.getDistance());
+		SmartDashboard.putNumber("Encoder2", motors[2].encoder.getDistance());
+		SmartDashboard.putNumber("Encoder3", motors[3].encoder.getDistance());
+		
 		x *= Math.abs(x);
 		y *= Math.abs(y);
 		rotation *= Math.abs(rotation);
@@ -134,9 +141,10 @@ public class PIDMecanumDrive {
 	/**
 	 * Resets the encoder values, as name suggests.
 	 */
-	public void resetEncoders() {
+	public void reset() {
 		for (PIDVictorSP motor : motors) {
 			motor.encoder.reset();
+			motor.reset();
 		}
 	}
 }

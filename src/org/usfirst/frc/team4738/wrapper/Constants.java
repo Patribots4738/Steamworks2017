@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4738.wrapper;
 
 /**
- * Gotta have da 4matting! :)
+ * Gota hav da 4maddin'! :)
  * @author Stephen (AKA: Barry)
  */
 public class Constants {
@@ -16,6 +16,7 @@ public class Constants {
 	DRIVER_STATION_PORT={0,1,2,3,4,5};
 	
 	public static final double
+	WHEEL_RADIUS = 3,
 	TOP_SPEED = 210,
-	GEAR_RATIO = 1;
+	GEAR_RATIO = 6.6;
 }

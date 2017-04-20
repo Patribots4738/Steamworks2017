@@ -43,6 +43,10 @@ public class Autonomous {
 
 	public void move(double inches, double speed, int order) {
 		if (order == posInOrder) {
+			if (!hasStarted) {
+				drive.reset();
+				hasStarted = true;
+			}
 			// There must be an error here as the robot goes at full speed
 			// regardless
 			// We have to normalize the inches - encoder.getDistance so that the
@@ -50,14 +54,16 @@ public class Autonomous {
 			// by some crazy value like 4
 			// drive.linearMecanum(0, (speed * (inches -
 			// encoder.getDistance())), 0);
+			speed = (speed * (inches-encoder.getDistance()) / inches) + .15;
 			drive.linearMecanum(0, speed, 0);
 
-			SmartDashboard.putString("move Speed", "" + speed * (inches - encoder.getDistance()));
+			SmartDashboard.putNumber("move Speed", (speed * (inches-encoder.getDistance()) / inches) + .15);
 			System.out.println(Math.abs(encoder.getDistance()));
 			if (Math.abs(encoder.getDistance()) > inches) {
 				posInOrder++;
 				// drive.linearMecanum(1, 0, 0);
 				encoder.reset();
+				hasStarted = false;
 			}
 		}
 	}
@@ -98,7 +104,7 @@ public class Autonomous {
 
 	public void reset() {
 		posInOrder = 0;
-		drive.resetEncoders();
+		drive.reset();
 		gyro.reset();
 	}
 
@@ -130,12 +136,8 @@ public class Autonomous {
 		switch (autoNum) {
 
 		case -1:
-			rotate(90, .25, 0);
-			rotate(90, .25, 1);
-			rotate(90, .25, 2);
-			rotate(90, .25, 3);
-			stop(4);
-			move(1, -.25, 5);
+			double dist = SmartDashboard.getNumber("TestDist", 100);
+			move(dist, 0.25, 0);
 			break;
 		
 		// Middle of field
@@ -218,7 +220,7 @@ public class Autonomous {
 		case 4:
 			// 29.5 - 103in
 			// 38 crosses base line, 76 for halfway across the field
-			move(65, -.25, 0);
+			move(74, .25, 0);
 			stop(1);
 			break;
 

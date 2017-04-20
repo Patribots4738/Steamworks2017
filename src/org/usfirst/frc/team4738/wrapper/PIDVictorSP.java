@@ -64,4 +64,9 @@ public class PIDVictorSP {
 	public void setPID(double Kp, double Ki, double Kd){
 		pid.setPIDConstants(Kp, Ki, Kd);
 	}
+	
+	public void reset() {
+		this.encoder.reset();
+		this.victor.stopMotor();
+	}
 }
